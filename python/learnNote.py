@@ -159,3 +159,9 @@ print(datetime.now().strftime('%M-%S'))
 for k in range(10):
     time.sleep(randint(1, 4))
     print(datetime.now().strftime('%M-%S'))
+
+#%% numpy
+import numpy as np
+x = np.linspace(1,5,5)
+x1 = x.tolist()
+y1 = np.zeros([1,len(x)])
