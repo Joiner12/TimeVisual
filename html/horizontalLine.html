@@ -7,11 +7,11 @@
 
 </head>
 <body>
-    <div id="66894218293141f9a21155950d4ae98b" class="chart-container" style="width:900px; height:500px;"></div>
+    <div id="1f78c080bb704d69aeb996ebfdd8d6bf" class="chart-container" style="width:900px; height:500px;"></div>
     <script>
-        var chart_66894218293141f9a21155950d4ae98b = echarts.init(
-            document.getElementById('66894218293141f9a21155950d4ae98b'), 'white', {renderer: 'canvas'});
-        var option_66894218293141f9a21155950d4ae98b = {
+        var chart_1f78c080bb704d69aeb996ebfdd8d6bf = echarts.init(
+            document.getElementById('1f78c080bb704d69aeb996ebfdd8d6bf'), 'white', {renderer: 'canvas'});
+        var option_1f78c080bb704d69aeb996ebfdd8d6bf = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -21,8 +21,8 @@
     "animationEasingUpdate": "cubicOut",
     "animationDelayUpdate": 0,
     "color": [
-        "#65CFD5",
-        "#65CFD5",
+        "blue",
+        "blue",
         "#c23531",
         "#2f4554",
         "#61a0a8",
@@ -87,7 +87,7 @@
             },
             "areaStyle": {
                 "opacity": 1,
-                "color": "#65CFD5"
+                "color": "blue"
             },
             "zlevel": 0,
             "z": 0
@@ -272,6 +272,92 @@
             },
             "zlevel": 0,
             "z": 0
+        },
+        {
+            "type": "line",
+            "name": "b",
+            "connectNulls": false,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "data": [
+                [
+                    6.0,
+                    1.0
+                ],
+                [
+                    9.0,
+                    1.0
+                ],
+                [
+                    12.0,
+                    1.0
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 1,
+                "color": "green"
+            },
+            "zlevel": 0,
+            "z": 0
+        },
+        {
+            "type": "line",
+            "name": "a",
+            "connectNulls": false,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "data": [
+                [
+                    6.0,
+                    0.0
+                ],
+                [
+                    9.0,
+                    0.0
+                ],
+                [
+                    12.0,
+                    0.0
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 1,
+                "color": "white"
+            },
+            "zlevel": 0,
+            "z": 0
         }
     ],
     "legend": [
@@ -280,6 +366,8 @@
                 "b",
                 "a",
                 "d",
+                "b",
+                "a",
                 "b",
                 "a"
             ],
@@ -342,7 +430,7 @@
     ],
     "yAxis": [
         {
-            "show": false,
+            "show": true,
             "scale": false,
             "nameLocation": "end",
             "nameGap": 15,
@@ -372,7 +460,7 @@
         }
     ]
 };
-        chart_66894218293141f9a21155950d4ae98b.setOption(option_66894218293141f9a21155950d4ae98b);
+        chart_1f78c080bb704d69aeb996ebfdd8d6bf.setOption(option_1f78c080bb704d69aeb996ebfdd8d6bf);
     </script>
 </body>
 </html>

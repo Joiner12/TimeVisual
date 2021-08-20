@@ -1,5 +1,5 @@
 from pyecharts import options as opts
-from pyecharts.charts import Line, Scatter
+from pyecharts.charts import Line, Scatter, Bar
 import numpy as np
 """
 函数:
@@ -19,11 +19,11 @@ import numpy as np
 
 def drawRect(x_left: int = 0, y_button: int = 0,
              width: int = 2, height: int = 1, color='#65CFD5'):
-    x = np.linspace(start=x_left,stop=x_left+width,num=3)
-    y1 = np.zeros([1,len(x)])+y_button
+    x = np.linspace(start=x_left, stop=x_left+width, num=3)
+    y1 = np.zeros([1, len(x)])+y_button
     y2 = y1+height
     x = x.tolist()
-    y1=y1.tolist()[0]
+    y1 = y1.tolist()[0]
     y2 = y2.tolist()[0]
     line1 = Line(init_opts=opts.InitOpts())
     line1.add_xaxis(x)
@@ -32,16 +32,15 @@ def drawRect(x_left: int = 0, y_button: int = 0,
     line1.add_yaxis("a", y1, color=color, is_symbol_show=False,
                     areastyle_opts=opts.AreaStyleOpts(opacity=1, color='white'))
     line1.set_global_opts(legend_opts=opts.LegendOpts(is_show=False),
-                          yaxis_opts=opts.AxisOpts(is_show=False, min_=-5, max_=5))
+                          yaxis_opts=opts.AxisOpts(is_show=True, min_=-5, max_=5))
     return line1
 
 
 x = [a for a in range(10)]
-y1 = [1 for z in range(10)]
-y2 = [2 for z in range(10)]
 y4 = [1.5 for z in range(10)]
-line1 = drawRect()
+line1 = drawRect(0, 0, 2, 1, 'blue')
 line2 = drawRect(2, 0, 6, 1, 'red')
+line3 = drawRect(6, 0, 6, 1, 'green')
 scatter = (
     Scatter()
     .add_xaxis(x)
@@ -49,5 +48,9 @@ scatter = (
 )
 line1.overlap(scatter)
 line1.overlap(line2)
+line1.overlap(line3)
 line1.render("..//html//horizontalLine.html")
 print("因为我不知道 下一辈子还是否能遇见你\n所以我今生才会那么努力 把最后的给你\n")
+
+# using matlplotlib to draw pic
+# https://www.osgeo.cn/matplotlib/gallery/lines_bars_and_markers/timeline.html
