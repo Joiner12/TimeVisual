@@ -15,6 +15,7 @@ from DrawPie import DrawPie
 from GetFlightInfo import FlightInfo
 from pyecharts.charts import Page
 from bs4 import BeautifulSoup
+from DrawImage import DrawImage
 
 
 class TimeCharts():
@@ -167,7 +168,8 @@ class TimeCharts():
                         curIndex = startTickList.index(j)
                         if str(curSheet.iloc[curIndex, 2]) in event_x:
                             timeStampTemp = j.strftime("%H-%M")
-                            event_x.append(str(curSheet.iloc[curIndex, 2])+timeStampTemp)
+                            event_x.append(
+                                str(curSheet.iloc[curIndex, 2])+timeStampTemp)
                         else:
                             event_x.append(str(curSheet.iloc[curIndex, 2]))
                         event_y.append(int(curSheet.iloc[curIndex, 3]))
@@ -244,6 +246,21 @@ class TimeCharts():
             DepartureFile = "..//data//FlightDeparture-2021-08-13.xlsx"
         return DrawMap(FlightArrivalFile=ArrivalFile,
                        FlightDepartureFile=DepartureFile)
+    """
+    函数:
+        水平时间线(图)
+    定义:
+        horizontalLineImage(self)
+    输入:
+        none
+    输出:
+        pyecharts,image
+    """
+
+    def horizontalLineImage(self):
+        # step 1:更新图片
+        # step 2:刷新网页
+        return DrawImage()
 
 
 """
@@ -287,11 +304,13 @@ def mergeListToDict(list_name, list_value):
 def mainPage():
     mainHtml = "..//html//mainpage.html"
     Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
-    pieCt = Tc_1.dailyPie(startDay="2021-08-12", endDay=datetime.now().strftime("%Y-%m-%d"))
+    pieCt = Tc_1.dailyPie(startDay="2021-08-12",
+                          endDay=datetime.now().strftime("%Y-%m-%d"))
     wordcloudCt = Tc_1.periodWordCloud()
     lineCt = Tc_1.dailyLine()
     barCt = Tc_1.dailyBar()
     mapCt = Tc_1.flightMap(updateData=False)
+    imageCt = Tc_1.horizontalLineImage()
     # main page
     mainpage = Page(page_title="😁 Daily life 😁")
     mainpage.add(pieCt)
@@ -299,7 +318,9 @@ def mainPage():
     mainpage.add(mapCt)
     mainpage.add(barCt)
     mainpage.add(wordcloudCt)
+    mainpage.add(imageCt)
     mainpage.render(mainHtml)
+
     # 调整main page 布局
     adjustMainPage(mainHtml)
     print("main page run finished...")
@@ -325,7 +346,11 @@ def adjustMainPage(mainpagefile="..//html//mainpage.html"):
         # wordcloud
         divs[4]["style"] = "width:300px;height:300px;position:absolute;" + \
             "top:200px;left:760px;border-style:solid;border-color:#444444;border-width:0px;"
-
+        # image
+        divs[5]["style"] = "width:1800px;height:1200px;position:absolute;" + \
+            "top:1100px;left:0px;border-style:solid;border-color:#444444;border-width:0px;" +\
+            "text-align:center;"
+        # 修改网页背景色
         body = html_bf.find("body")
         body["style"] = "background-color:#D6D7C5;"
         # 增加header标签
@@ -349,9 +374,9 @@ def adjustMainPage(mainpagefile="..//html//mainpage.html"):
 
 
 if __name__ == "__main__":
-    if True:
-        mainPage()
-        # adjustMainPage()
+    if False:
+        # mainPage()
+        adjustMainPage()
     else:
         Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
-        Tc_1.dailyLine()
+        ti = Tc_1.getDateSpecTime(startDay = "2021-8-9", endDay = "2021-8-9")
