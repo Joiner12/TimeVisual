@@ -165,3 +165,6 @@ import numpy as np
 x = np.linspace(1,5,5)
 x1 = x.tolist()
 y1 = np.zeros([1,len(x)])
+#%% 
+from pyecharts.charts import Bar
+print("check lib finished")

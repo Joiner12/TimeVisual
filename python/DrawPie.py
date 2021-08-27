@@ -19,7 +19,7 @@ from datetime import datetime
 """
 
 
-def DrawPie(valueDict, renderfile="..//html//pieTest.html"):
+def DrawPie(valueDict=[list(z) for z in zip(Faker.choose(), Faker.values())]):
     data_b = [list(z) for z in zip(valueDict.keys(), valueDict.values())]
     c = Pie(init_opts=opts.InitOpts(width="600px", height="500px",
                                     page_title="dailyPie"+datetime.now().strftime('%Y-%m-%d')))
@@ -69,7 +69,7 @@ def DrawPie(valueDict, renderfile="..//html//pieTest.html"):
     )
     c.set_global_opts(title_opts=opts.TitleOpts(
         title="Pie-Daily"))
-    c.render(renderfile)
+    c.render("..//html//pieTest.html")
     print("daily pie run finished...\n")
     return c
 
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     testData = dict()
     for k, v in zip(Faker.choose(), Faker.values()):
         testData[k] = v
-    DrawPie(testData, renderfile="..//html//pie-1.html")
+    DrawPie(testData)
