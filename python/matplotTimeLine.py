@@ -29,7 +29,7 @@ def test():
                    for ii in startTick]
     endTick_t = [datetime.strptime(ii, "%Y-%m-%d %H:%M:%S") for ii in endTick]
     levels = np.array([-5, 5, -3, 3, -1, 1])
-    fig, ax = plt.subplots(figsize=(24, 24*0.618), facecolor='#D6D7C5')
+    fig, ax = plt.subplots(figsize=(24, 24*0.618), facecolor='#D6D7C5',dpi=600)
 
     # Create the base bar from 5am to 1am
     start = datetime.strptime('2021-08-09 05:00:00', '%Y-%m-%d %H:%M:%S')
@@ -37,7 +37,7 @@ def test():
     baseGapMin = (stop-start).total_seconds()/60
     ax.set(facecolor="#D6D7C5")
     ax.broken_barh([(0, baseGapMin)],
-                   (-1/2, 1), alpha=.5, facecolors='white', edgecolors='white')
+                   (-1/2, 1), alpha=.5, facecolors='#ace9e8', edgecolors='white')
 
     ax.set_ylim(-8, 8)
     for ii, (iname, itick, ieventLast) in enumerate(zip(eventName, startTick_t, eventLast)):

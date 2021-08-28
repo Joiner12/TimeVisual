@@ -10,7 +10,7 @@ from pyecharts.options import ComponentTitleOpts
 from os import path
 
 
-def DrawImage(imgUrl="../html/pic/houzi.png"):
+def DrawImage(imgUrl="../html/pic/horizontalLine.png"):
     image = Image(page_title="image")
     # check file exists
     if not path.isfile(imgUrl):
@@ -18,7 +18,7 @@ def DrawImage(imgUrl="../html/pic/houzi.png"):
     image.add(
         src=imgUrl,
         # image align center should modify outside
-        style_opts={"style": "margin-top: 20px;text-align: center;"},
+        style_opts={"style": "margin-top: 20px;text-align: center;width:1800px;height:900px;"},
     )
     image.set_global_opts(
         title_opts=ComponentTitleOpts(title="Time Line")
@@ -29,4 +29,4 @@ def DrawImage(imgUrl="../html/pic/houzi.png"):
 
 
 if __name__ == "__main__":
-    DrawImage('../html/pic/101756.png')
+    DrawImage()
