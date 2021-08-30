@@ -374,9 +374,9 @@ def adjustMainPage(mainpagefile="..//html//mainpage.html"):
 
 
 if __name__ == "__main__":
-    if False:
-        # mainPage()
-        adjustMainPage()
+    if True:
+        mainPage()
+        # adjustMainPage()
     else:
         Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
         ti = Tc_1.getDateSpecTime(startDay = "2021-8-9", endDay = "2021-8-9")

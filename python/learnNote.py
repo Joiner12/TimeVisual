@@ -168,3 +168,43 @@ y1 = np.zeros([1,len(x)])
 #%% 
 from pyecharts.charts import Bar
 print("check lib finished")
+#%% set_xaxis label
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import matplotlib.cbook as cbook
+
+# Load a numpy structured array from yahoo csv data with fields date, open,
+# close, volume, adj_close from the mpl-data/example directory.  This array
+# stores the date as an np.datetime64 with a day unit ('D') in the 'date'
+# column.
+data = [7,10,8,11,5,9,9,6]
+
+fig, axs = plt.subplots(3, 1, figsize=(6.4, 7), constrained_layout=True)
+# common to all three:
+for ax in axs:
+    ax.plot('date', 'adj_close', data=data)
+    # Major ticks every half year, minor ticks every month,
+    ax.xaxis.set_major_locator(mdates.MonthLocator(bymonth=(1, 7)))
+    ax.xaxis.set_minor_locator(mdates.MonthLocator())
+    ax.grid(True)
+    ax.set_ylabel(r'Price [\$]')
+
+# different formats:
+ax = axs[0]
+ax.set_title('DefaultFormatter', loc='left', y=0.85, x=0.02, fontsize='medium')
+
+ax = axs[1]
+ax.set_title('ConciseFormatter', loc='left', y=0.85, x=0.02, fontsize='medium')
+ax.xaxis.set_major_formatter(
+    mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
+
+ax = axs[2]
+ax.set_title('Manual DateFormatter', loc='left', y=0.85, x=0.02,
+             fontsize='medium')
+# Text in the x axis will be displayed in 'YYYY-mm' format.
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%b'))
+# Rotates and right-aligns the x labels so they don't crowd each other.
+for label in ax.get_xticklabels(which='major'):
+    label.set(rotation=30, horizontalalignment='right')
+
+plt.show()
