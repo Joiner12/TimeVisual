@@ -11,7 +11,7 @@ from os import path
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.dates as mdates
-from datetime import datetime
+from datetime import datetime, timedelta
 
 plt.rcParams['font.sans-serif'] = ['KaiTi']
 plt.rcParams['axes.unicode_minus'] = False
@@ -41,16 +41,22 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
                                      '2021-08-09 15:18:00',
                                      '2021-08-09 16:40:00', '2021-08-09 17:19:00'],
                         eventName_x=['开会', '发票', 'visual-code', '舆情分析',
-                                     'AOA-Paper', 'AOA-Paper', 'visual-code'],
-                        eventLast_x=[30, 78, 33, 47, 69, 39, 15]):
+                                     'AOA-Paper', 'AOA-Paper', 'visual-code']):
     colors = ['#E5562D', '#E0A459', '#CFBE65', '#A8CF65', '#6FD67D', '#68D5AE'
               '#6FD0DB', '#5294D0', '#595CD0', '#9E59D0', '#D05994']
+    # data preprocession
+    # datetime-str→datetime→baseline→gap
 
-    startTick = startTick_x
+    startTick = [datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
+                 for x in startTick_x]
+    zeroTick = datetime.strptime(datetime.strftime(
+        startTick[1], "%Y-%m-%d")+" 07:00:00")
+    stopTick = zeroTick+timedelta(hours=19)
     eventName = eventName_x
+    eventLast_x = [30, 78, 33, 47, 69, 39, 15]
     eventLast = eventLast_x
-    startTick_t = [datetime.strptime(ii, "%Y-%m-%d %H:%M:%S")
-                   for ii in startTick]
+    # startTick_t = [datetime.strptime(ii, "%Y-%m-%d %H:%M:%S")
+    #                for ii in startTick]
     levels = np.array([-5, 5, -3, 3, -1, 1])
     fig, ax = plt.subplots(figsize=(24, 24*0.618),
                            facecolor='#D6D7C5', dpi=300)
@@ -69,20 +75,22 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
 
     ax.set_ylim(-8, 8)
     ax.set_title('Daily Time Line', fontsize=60, color='white')
-    for ii, (iname, itick, ieventLast) in enumerate(zip(eventName, startTick_t, eventLast)):
+    for ii, (iname, itick, ieventLast) in enumerate(zip(eventName, startTick, eventLast)):
         barhColor = colors[ii % 4]
         level = levels[ii % 6]
         vert = 'top' if level < 0 else 'bottom'
-        curPointX = (itick-start).total_seconds()/60
+        tickTemp = datetime.strptime(itick, "%Y-%m-%d %H:%M:%S")
+        curPointX = (tickTemp-start).total_seconds()/60
         curPointX_M = curPointX + ieventLast/2
         ax.scatter(curPointX_M, 0, s=100, facecolor='w',
                    edgecolor=barhColor, zorder=9999)
         # a line up to the text
         ax.plot((curPointX_M, curPointX_M), (0, level), c='white', alpha=.5)
         # text
-        ax.text(curPointX_M, level, iname,
+        itext = iname+"\n"+itick+"|"+str(ieventLast)
+        ax.text(curPointX_M, level, itext,
                 horizontalalignment='center', verticalalignment=vert, fontsize=20,
-                backgroundcolor=(1., 1., 1., .3))
+                backgroundcolor='#C3EAE9')
         # broken_bar
         ax.broken_barh([(curPointX, ieventLast)], (-1/2, 1),
                        facecolors=barhColor, edgecolors='white', lw=4)
@@ -96,13 +104,18 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
     # Remove components for a cleaner look
     plt.setp((ax.get_yticklabels() + ax.get_yticklines() +
               list(ax.spines.values())), visible=False)
-    # plt.show()
-    imageFile = '../html/pic/timeline.png'
-    plt.savefig(imageFile, bbox_inches='tight')
-    print('image generated', imageFile)
-    return imageFile
+    plt.setp((ax.get_xticklabels() + ax.get_xticklines() +
+              list(ax.spines.values())), visible=False)
+    if False:
+        imageFile = '../html/pic/timeline.png'
+        plt.savefig(imageFile, bbox_inches='tight')
+        print('image generated', imageFile)
+        return imageFile
+    else:
+        plt.show()
+    print("从眼里留下谢谢两个字 尽管叫我疯子 不准叫我傻子")
 
 
 if __name__ == "__main__":
     UpdateTimeLineImage()
-    DrawImage()
+    # DrawImage()

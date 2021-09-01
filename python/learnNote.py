@@ -1,5 +1,10 @@
 # %% :和→用法解释
 # -*- coding:utf-8 -*-
+from datetime import datetime, timedelta
+import matplotlib.cbook as cbook
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+from pyecharts.charts import Bar
 from random import randint
 import time
 from readDataFromExcel import DataFromExcel
@@ -160,24 +165,19 @@ for k in range(10):
     time.sleep(randint(1, 4))
     print(datetime.now().strftime('%M-%S'))
 
-#%% numpy
-import numpy as np
-x = np.linspace(1,5,5)
+# %% numpy
+x = np.linspace(1, 5, 5)
 x1 = x.tolist()
-y1 = np.zeros([1,len(x)])
-#%% 
-from pyecharts.charts import Bar
+y1 = np.zeros([1, len(x)])
+# %%
 print("check lib finished")
-#%% set_xaxis label
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import matplotlib.cbook as cbook
+# %% set_xaxis label
 
 # Load a numpy structured array from yahoo csv data with fields date, open,
 # close, volume, adj_close from the mpl-data/example directory.  This array
 # stores the date as an np.datetime64 with a day unit ('D') in the 'date'
 # column.
-data = [7,10,8,11,5,9,9,6]
+data = [7, 10, 8, 11, 5, 9, 9, 6]
 
 fig, axs = plt.subplots(3, 1, figsize=(6.4, 7), constrained_layout=True)
 # common to all three:
@@ -207,4 +207,34 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%b'))
 for label in ax.get_xticklabels(which='major'):
     label.set(rotation=30, horizontalalignment='right')
 
+plt.show()
+
+# %%
+# 生成横纵坐标信息
+startTick_x = ['2021-08-09 09:00:00', '2021-08-09 09:45:00',
+               '2021-08-09 11:11:00', '2021-08-09 14:30:00',
+               '2021-08-09 15:18:00',
+               '2021-08-09 16:40:00', '2021-08-09 17:19:00'],
+eventName_x = ['开会', '发票', 'visual-code', '舆情分析',
+               'AOA-Paper', 'AOA-Paper', 'visual-code'],
+eventLast_x = [30, 78, 33, 47, 69, 39, 15]
+dates = ['01/02/1991', '01/03/1991', '01/04/1991']
+xs = [datetime.strptime(d, '%m/%d/%Y').date() for d in dates]
+ys = range(len(xs))
+# 配置横坐标
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+# Plot
+plt.plot(xs, ys)
+plt.gcf().autofmt_xdate()  # 自动旋转日期标记
+plt.show()
+
+# %%
+start = datetime.strptime('2021-08-09 07:00:00', '%Y-%m-%d %H:%M:%S')
+stop = start+timedelta(hours=20)
+detimestr = stop.strftime("%Y-%m-%d %H:%M:%S")
+fig, ax = plt.subplots(figsize=(24, 24*0.618),
+                       facecolor='#D6D7C5', dpi=300)
+ax.broken_barh([(start, (stop-start))],
+               (-1/2, 1), alpha=.5, facecolors='#ace9e8', edgecolors='white')
 plt.show()
