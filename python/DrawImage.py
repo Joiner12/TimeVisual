@@ -10,7 +10,6 @@ from pyecharts.options import ComponentTitleOpts
 from os import path
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 
 plt.rcParams['font.sans-serif'] = ['KaiTi']
@@ -41,79 +40,82 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
                                      '2021-08-09 15:18:00',
                                      '2021-08-09 16:40:00', '2021-08-09 17:19:00'],
                         eventName_x=['开会', '发票', 'visual-code', '舆情分析',
-                                     'AOA-Paper', 'AOA-Paper', 'visual-code']):
+                                     'AOA-Paper', 'AOA-Paper', 'visual-code'],
+                        eventLast_x=[30, 78, 33, 47, 69, 39, 15]):
     colors = ['#E5562D', '#E0A459', '#CFBE65', '#A8CF65', '#6FD67D', '#68D5AE'
               '#6FD0DB', '#5294D0', '#595CD0', '#9E59D0', '#D05994']
     # data preprocession
     # datetime-str→datetime→baseline→gap
 
-    startTick = [datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
-                 for x in startTick_x]
-    zeroTick = datetime.strptime(datetime.strftime(
-        startTick[1], "%Y-%m-%d")+" 07:00:00")
-    stopTick = zeroTick+timedelta(hours=19)
+    startTick_t = [datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
+                   for x in startTick_x]
+    zeroTick_t = datetime.strptime(datetime.strftime(
+        startTick_t[1], "%Y-%m-%d")+" 07:00:00", "%Y-%m-%d %H:%M:%S")
+    endTick_t = zeroTick_t+timedelta(hours=19)
     eventName = eventName_x
-    eventLast_x = [30, 78, 33, 47, 69, 39, 15]
+
     eventLast = eventLast_x
     # startTick_t = [datetime.strptime(ii, "%Y-%m-%d %H:%M:%S")
-    #                for ii in startTick]
+    #                for ii in startTick_t]
     levels = np.array([-5, 5, -3, 3, -1, 1])
-    fig, ax = plt.subplots(figsize=(24, 24*0.618),
-                           facecolor='#D6D7C5', dpi=300)
+    fig, ax = plt.subplots(figsize=(36, 36*0.5625),
+                           facecolor='#D6D7C5', dpi=200)
 
     # Create the base bar from 5am to 1am
     start = datetime.strptime('2021-08-09 05:00:00', '%Y-%m-%d %H:%M:%S')
     stop = datetime.strptime('2021-08-10 02:00:00', '%Y-%m-%d %H:%M:%S')
     baseGapMin = (stop-start).total_seconds()/60
     ax.set(facecolor="#D6D7C5")
-    if False:
-        ax.broken_barh([(0, baseGapMin)],
-                       (-1/2, 1), alpha=.5, facecolors='#ace9e8', edgecolors='white')
+    if True:
+        ax.broken_barh(
+            [(0, baseGapMin)], (-1/2, 1), alpha=.5,
+            facecolors='#ace9e8', edgecolors='white', lw=4, capstyle='round')
     else:
-        ax.arrow(0, 0, baseGapMin, 0, width=0.01, length_includes_head=False, head_width=0.25,
-                 head_length=25, ec='white')
+        ax.arrow(
+            0, 0, baseGapMin, 0, width=0.01, length_includes_head=False,
+            head_width=0.25, head_length=25, ec='white')
 
     ax.set_ylim(-8, 8)
-    ax.set_title('Daily Time Line', fontsize=60, color='white')
-    for ii, (iname, itick, ieventLast) in enumerate(zip(eventName, startTick, eventLast)):
+    # set as page background image no need title
+    # ax.set_title('Daily Time Line', fontsize=60, color='white')
+    for ii, (iname, itick, ieventLast) in enumerate(zip(eventName, startTick_t, eventLast)):
         barhColor = colors[ii % 4]
         level = levels[ii % 6]
         vert = 'top' if level < 0 else 'bottom'
-        tickTemp = datetime.strptime(itick, "%Y-%m-%d %H:%M:%S")
-        curPointX = (tickTemp-start).total_seconds()/60
+        # tickTemp = datetime.strptime(itick, "%Y-%m-%d %H:%M:%S")
+        curPointX = (itick-start).total_seconds()/60
         curPointX_M = curPointX + ieventLast/2
         ax.scatter(curPointX_M, 0, s=100, facecolor='w',
                    edgecolor=barhColor, zorder=9999)
         # a line up to the text
         ax.plot((curPointX_M, curPointX_M), (0, level), c='white', alpha=.5)
         # text
-        itext = iname+"\n"+itick+"|"+str(ieventLast)
-        ax.text(curPointX_M, level, itext,
-                horizontalalignment='center', verticalalignment=vert, fontsize=20,
-                backgroundcolor='#C3EAE9')
+        itickStr = datetime.strftime(itick, "%m-%d %H:%M")
+        itext = iname+"\n"+itickStr+"|"+str(ieventLast)
+        textInstance = ax.text(
+            curPointX_M, level, itext,
+            horizontalalignment='center', verticalalignment=vert, fontsize=20,
+            fontfamily='Microsoft YaHei')
+        textInstance.set_bbox(
+            dict(boxstyle="round", alpha=0.5, color='#C3EAE9'))
         # broken_bar
         ax.broken_barh([(curPointX, ieventLast)], (-1/2, 1),
                        facecolors=barhColor, edgecolors='white', lw=4)
-    if False:
-        # todo:xlabel setting
-        ax.get_xaxis().set_major_locator(
-            mdates.MinuteLocator(byminute=range(60), interval=10))
-        ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%H %M"))
-        fig.autofmt_xdate()
 
     # Remove components for a cleaner look
     plt.setp((ax.get_yticklabels() + ax.get_yticklines() +
               list(ax.spines.values())), visible=False)
     plt.setp((ax.get_xticklabels() + ax.get_xticklines() +
               list(ax.spines.values())), visible=False)
-    if False:
-        imageFile = '../html/pic/timeline.png'
+    plt.xlabel(startTick_t[int(len(startTick_t)/2)].strftime("%Y-%m-%d"),
+               fontsize=40, fontfamily='Microsoft YaHei')
+    if True:
+        imageFile = r'../html/pic/timeline.png'
         plt.savefig(imageFile, bbox_inches='tight')
         print('image generated', imageFile)
         return imageFile
     else:
         plt.show()
-    print("从眼里留下谢谢两个字 尽管叫我疯子 不准叫我傻子")
 
 
 if __name__ == "__main__":

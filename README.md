@@ -38,12 +38,15 @@ The project  based on `python`  `pyehcarts` `matplotlib` ...
 
 ....
 
-## 3.Todo:
+## 3.Todo
 
-- ...
-- ...
-- ...
-- 
+- [x] Layout of page Ver1.0
+- [ ] Daily time review.
+- [ ] Weekly  time review.
+- [ ] Mothly time review.
+- [ ] ......
+
+
 
 ## Links
 
