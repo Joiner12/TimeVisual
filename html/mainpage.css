@@ -1,7 +1,3 @@
-.bg01 {
-  font-size: 50px;
-}
-
 .mui-content {
   background: url(./pic/timeline.png) bottom center no-repeat #efeff4;
   background-size: 100% 100%;
@@ -35,7 +31,7 @@
   line-height: 53px;
   width: 53px;
   height: 53px;
-  border-radius:50%;
+  border-radius: 50%;
   padding: 0;
   border: none;
 }
