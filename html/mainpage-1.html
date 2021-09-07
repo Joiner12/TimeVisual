@@ -18,14 +18,13 @@
     <hr />
     <div id="dg" style="z-index: 9999; position: fixed ! important; right: 0px; top: 0px;">
         <table width="" 100% style="position: absolute; width:260px; right: 0px; top: 0px;">
-            <button class="custom-btn btn-6"><span>DailyPie</span></button>
+            <button id="btn-1" class="custom-btn btn-6"><span>DailyPie</span></button>
         </table>
     </div>
-    <!-- <div id="5a156e67104a454881553d9f547be356" class="chart-container" style="width:900px; height:500px;"></div> -->
-    <div id="5a156e67104a454881553d9f547be356" class="frame"></div>
+    <div id="bar_1" class="chart-container" style="width:900px; height:500px;"></div>
     <script>
         var chart_5a156e67104a454881553d9f547be356 = echarts.init(
-            document.getElementById('5a156e67104a454881553d9f547be356'), 'white', { renderer: 'canvas' });
+            document.getElementById('bar_1'), 'white', { renderer: 'canvas' });
         var option_5a156e67104a454881553d9f547be356 = {
             "animation": true,
             "animationThreshold": 2000,

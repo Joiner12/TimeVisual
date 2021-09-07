@@ -1,7 +1,7 @@
 // 点击实现隐藏\显示功能
 window.onload = function () {
-  var obt = document.getElementById("bt");
-  var odiv = document.getElementById("thediv");
+  var obt = document.getElementById("btn-1");
+  var odiv = document.getElementById("bar_1");
   obt.onclick = function () {
     if (odiv.style.display == "none") {
       odiv.style.display = "block";
