@@ -32,20 +32,43 @@ body {
   /* opacity: 0.8;
   filter: none; */
 }
-.btn-2 {
+.btn-pie-position {
+  position: absolute;
+  left: 1%;
+  top: 95%;
+}
+
+.btn-bar-position {
+  position: absolute;
+  left: 6%;
+  top: 95%;
+}
+
+.btn-line-position {
+  position: absolute;
+  left: 11%;
+  top: 95%;
+}
+
+.btn-map-position {
+  position: absolute;
+  left: 16%;
+  top: 95%;
+}
+.btn-base {
   /*去掉下划线*/
   text-decoration: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /* position: absolute;
+  left: 1%;
+  top: 95%; */
+  /* transform: translate(1%, -50%); */
   /* 设置字体大小 */
-  font-size: 24px;
+  font-size: 20px;
   background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
   background-size: 400%;
-  width: 400px;
-  height: 100px;
-  line-height: 100px;
+  width: 80px;
+  height: 40px;
+  line-height: 20px;
   text-align: center;
   color: #fff;
   /* 字母变大写 */
@@ -55,7 +78,7 @@ body {
   z-index: 1;
 }
 /* 设置发光 */
-.btn-2::before {
+.btn-base::before {
   content: "";
   position: absolute;
   left: -5px;
@@ -68,10 +91,10 @@ body {
   filter: blur(20px);
   z-index: -1;
 }
-.btn-2:hover::before {
+.btn-base:hover::before {
   animation: sun 8s infinite;
 }
-.btn-2:hover {
+.btn-base:hover {
   animation: sun 8s infinite;
 }
 /* 设置流光 */
