@@ -1,16 +1,82 @@
-.mui-content {
-  background: url(./pic/timeline.png) bottom center no-repeat #efeff4;
-  background-size: 100% 100%;
-  /* width: 100%;
-  height: 100%; */
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
 .head01 {
   background-color: #d6d7c5;
   font-size: 50px;
   text-align: center;
   font-family: "Impact";
   color: #58b4b9;
+}
+
+body {
+  background: url(./pic/timeline.png) bottom center no-repeat #efeff4;
+  /* 完全占据背景 */
+  /* width: 100%;
+  height: 100%; */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* opacity: 0.2;
+  filter: none; */
+}
+
+.chart-container {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chart-bg {
+  background-color: #d6d7c5;
+  /* opacity: 0.8;
+  filter: none; */
+}
+.btn-2 {
+  /*去掉下划线*/
+  text-decoration: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* 设置字体大小 */
+  font-size: 24px;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 400%;
+  width: 400px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #fff;
+  /* 字母变大写 */
+  text-transform: uppercase;
+  /* 设置成胶囊状 */
+  border-radius: 50px;
+  z-index: 1;
+}
+/* 设置发光 */
+.btn-2::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  top: -5px;
+  bottom: -5px;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 400%;
+  border-radius: 50px;
+  filter: blur(20px);
+  z-index: -1;
+}
+.btn-2:hover::before {
+  animation: sun 8s infinite;
+}
+.btn-2:hover {
+  animation: sun 8s infinite;
+}
+/* 设置流光 */
+@keyframes sun {
+  100% {
+    background-position: -400% 0;
+  }
 }

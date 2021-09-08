@@ -2,6 +2,7 @@
 window.onload = function () {
   var obt = document.getElementById("btn-1");
   var odiv = document.getElementById("bar_1");
+  var bodybg = document.getElementsByTagName("body")
   obt.onclick = function () {
     if (odiv.style.display == "none") {
       odiv.style.display = "block";
