@@ -14,7 +14,7 @@
 
 <body>
     <header class="head01">
-        2021-09-08
+        2021-09-16
     </header>
     <hr />
     <!-- button  -->
@@ -22,202 +22,15 @@
     <input type="button" value="Bar" id="btn-bar" class="btn-base btn-bar-position">
     <input type="button" value="Line" id="btn-line" class="btn-base btn-line-position">
     <input type="button" value="Map" id="btn-map" class="btn-base btn-map-position">
-    <!-- <div id="bar_1" class="chart-container chart-bg"></div> -->
-    <!-- <div id="bar_1" class="chart-container chart-bg"></div> -->
-    <!-- <iframe id="pie_iframe" src="pieTest.html" onload="adjustIframe();" frameborder="0" scrolling="auto">
+    <iframe id="pie_iframe" src="pieTest.html" onload="adjustIframe();" frameborder="0" scrolling="off">
     </iframe>
-    <iframe id="bar_iframe" src="barTest.html" onload="adjustIframe();" frameborder="0" scrolling="auto">
+    <!-- <iframe id="bar_iframe" src="barTest.html" onload="adjustIframe();" frameborder="0" scrolling="off">
     </iframe>
-    <iframe id="geo_iframe" src="geoTest.html" onload="adjustIframe();" frameborder="0" scrolling="auto">
+    <iframe id="geo_iframe" src="geoTest.html" onload="adjustIframe();" frameborder="0" scrolling="off">
+    </iframe>
+    <iframe id="geo_iframe" src="lineTest.html" onload="adjustIframe();" frameborder="0" scrolling="off">
     </iframe> -->
-    <!-- <script>
-        var chart_5a156e67104a454881553d9f547be356 = echarts.init(
-            document.getElementById('bar_1'), 'white', { renderer: 'canvas' });
-        var option_5a156e67104a454881553d9f547be356 = {
-            "animation": true,
-            "animationThreshold": 2000,
-            "animationDuration": 1000,
-            "animationEasing": "cubicOut",
-            "animationDelay": 0,
-            "animationDurationUpdate": 300,
-            "animationEasingUpdate": "cubicOut",
-            "animationDelayUpdate": 0,
-            "color": [
-                "#c23531",
-                "#2f4554",
-                "#61a0a8",
-                "#d48265",
-                "#749f83",
-                "#ca8622",
-                "#bda29a",
-                "#6e7074",
-                "#546570",
-                "#c4ccd3",
-                "#f05b72",
-                "#ef5b9c",
-                "#f47920",
-                "#905a3d",
-                "#fab27b",
-                "#2a5caa",
-                "#444693",
-                "#726930",
-                "#b2d235",
-                "#6d8346",
-                "#ac6767",
-                "#1d953f",
-                "#6950a1",
-                "#918597"
-            ],
-            "series": [
-                {
-                    "type": "bar",
-                    "name": "Daily Event",
-                    "legendHoverLink": true,
-                    "data": [
-                        42,
-                        5,
-                        107,
-                        52,
-                        79,
-                        60
-                    ],
-                    "showBackground": false,
-                    "barMinHeight": 0,
-                    "barCategoryGap": "60%",
-                    "barGap": "30%",
-                    "large": false,
-                    "largeThreshold": 400,
-                    "seriesLayoutBy": "column",
-                    "datasetIndex": 0,
-                    "clip": true,
-                    "zlevel": 0,
-                    "z": 2,
-                    "label": {
-                        "show": true,
-                        "position": "top",
-                        "margin": 8
-                    },
-                    "itemStyle": {
-                        "normal": {
-                            "color": new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(0, 244, 255, 1)' }, { offset: 1, color: 'rgba(0, 77, 167, 1)' }], false),
-                            "barBorderRadius": [
-                                8,
-                                8,
-                                8,
-                                8
-                            ],
-                            "shadowColor": "rgb(0, 160, 221)"
-                        }
-                    },
-                    "rippleEffect": {
-                        "show": true,
-                        "brushType": "stroke",
-                        "scale": 2.5,
-                        "period": 4
-                    }
-                }
-            ],
-            "legend": [
-                {
-                    "data": [
-                        "Daily Event"
-                    ],
-                    "selected": {
-                        "Daily Event": true
-                    },
-                    "show": true,
-                    "padding": 5,
-                    "itemGap": 10,
-                    "itemWidth": 25,
-                    "itemHeight": 14
-                }
-            ],
-            "tooltip": {
-                "show": true,
-                "trigger": "item",
-                "triggerOn": "mousemove|click",
-                "axisPointer": {
-                    "type": "line"
-                },
-                "showContent": true,
-                "alwaysShowContent": false,
-                "showDelay": 0,
-                "hideDelay": 100,
-                "textStyle": {
-                    "fontSize": 14
-                },
-                "borderWidth": 0,
-                "padding": 5
-            },
-            "xAxis": [
-                {
-                    "show": true,
-                    "scale": false,
-                    "nameLocation": "end",
-                    "nameGap": 15,
-                    "gridIndex": 0,
-                    "inverse": false,
-                    "offset": 0,
-                    "splitNumber": 5,
-                    "minInterval": 0,
-                    "splitLine": {
-                        "show": false,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid"
-                        }
-                    },
-                    "data": [
-                        "78",
-                        "AOA\\AOD",
-                        "\u5f00\u4f1a",
-                        "paper",
-                        "\u53d1\u7968",
-                        "visual-code"
-                    ]
-                }
-            ],
-            "yAxis": [
-                {
-                    "show": true,
-                    "scale": false,
-                    "nameLocation": "end",
-                    "nameGap": 15,
-                    "gridIndex": 0,
-                    "axisLabel": {
-                        "show": true,
-                        "position": "top",
-                        "margin": 8,
-                        "formatter": "{value} /min"
-                    },
-                    "inverse": false,
-                    "offset": 0,
-                    "splitNumber": 5,
-                    "minInterval": 0,
-                    "splitLine": {
-                        "show": false,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid"
-                        }
-                    }
-                }
-            ],
-            "title": [
-                {
-                    "padding": 5,
-                    "itemGap": 10
-                }
-            ]
-        };
-        chart_5a156e67104a454881553d9f547be356.setOption(option_5a156e67104a454881553d9f547be356);
-    </script> -->
+
 </body>
 
 </html>

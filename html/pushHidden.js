@@ -1,39 +1,41 @@
 // 点击实现隐藏\显示功能
 window.onload = function () {
-  var obt = document.getElementById("btn-pie");
-  var odiv = document.getElementById("bar_1");
-  obt.onclick = function () {
-    if (odiv.style.display == "none") {
-      odiv.style.display = "block";
+  // bar button
+  document.getElementById("btn-bar").onclick = function () {
+    var odivPie = document.getElementById("bar_iframe");
+    if (odivPie.style.display == "none") {
+      odivPie.style.display = "block";
     } else {
-      odiv.style.display = "none";
+      odivPie.style.display = "none";
     }
   };
-};
-window.onload = function () {
-  var obt = document.getElementById("btn-pie");
-  //获取iframe的window对象
-  var topWin = window.top.document.getElementById("pie_iframe").contentWindow;
-  //通过获取到的window对象操作HTML元素，这和普通页面一样
-  var oiframe = (topWin.document.getElementById(
-    "5a156e67104a454881553d9f547be356"
-  ).style.visibility = "visible");
-  obt.onclick = function () {
-    if (odiv.style.display == "none") {
-      odiv.style.display = "block";
+  // pie button
+  document.getElementById("btn-pie").onclick = function () {
+    var odivPie = document.getElementById("pie_iframe");
+    if (odivPie.style.display == "none") {
+      odivPie.style.display = "block";
     } else {
-      odiv.style.display = "none";
+      odivPie.style.display = "none";
     }
   };
-};
-window.onload = function () {
-  var obt = document.getElementById("btn-bar");
-  var odiv = document.getElementById("bar_1");
-  obt.onclick = function () {
-    if (odiv.style.display == "none") {
-      odiv.style.display = "block";
+
+  // geo button
+  document.getElementById("btn-geo").onclick = function () {
+    var odivPie = document.getElementById("geo_iframe");
+    if (odivPie.style.display == "none") {
+      odivPie.style.display = "block";
     } else {
-      odiv.style.display = "none";
+      odivPie.style.display = "none";
+    }
+  };
+
+  // line button
+  document.getElementById("btn-line").onclick = function () {
+    var odivPie = document.getElementById("line_iframe");
+    if (odivPie.style.display == "none") {
+      odivPie.style.display = "block";
+    } else {
+      odivPie.style.display = "none";
     }
   };
 };
