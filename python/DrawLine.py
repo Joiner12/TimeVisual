@@ -6,9 +6,13 @@ from datetime import datetime
 from pyecharts.faker import Faker
 
 
-def DrawLine(xData=Faker.choose(), yData=Faker.values()):
+def DrawLine(xData=Faker.choose(), yData=Faker.values(), **kw):
     xDataIn = xData
     yDataIn = yData
+    if 'title' in kw:
+        titleIn = kw['title']
+    else:
+        titleIn = 'test data'
     # js color
     background_color_js = (
         "new echarts.graphic.LinearGradient(0, 0, 0, 1, "
@@ -23,8 +27,8 @@ def DrawLine(xData=Faker.choose(), yData=Faker.values()):
         c = Line(init_opts=opts.InitOpts(bg_color=JsCode(
             background_color_js), page_title="Line "+datetime.now().strftime('%Y-%m-%d')))
     else:
-        c = Line(init_opts=opts.InitOpts(width="600px", height="500px", bg_color="#D6D7C5",
-                 page_title="Line "+datetime.now().strftime('%Y-%m-%d')))
+        c = Line(init_opts=opts.InitOpts(
+            page_title="Line "+datetime.now().strftime('%Y-%m-%d')))
     c.add_xaxis(xaxis_data=xDataIn)
     c.add_yaxis(
         series_name="Period Event",
@@ -73,10 +77,12 @@ def DrawLine(xData=Faker.choose(), yData=Faker.values()):
             splitline_opts=opts.SplitLineOpts(
                 is_show=True, linestyle_opts=opts.LineStyleOpts(color="#ffffff1f")
             ),
-        ),
-        legend_opts=opts.LegendOpts(
-            is_show=True,
-            textstyle_opts=opts.TextStyleOpts(font_size=20, color="#1B69D4", font_family=('Berlin Sans FB'))),
+        )        # ,
+        # legend_opts=opts.LegendOpts(
+        #     is_show=True,
+        #     textstyle_opts=opts.TextStyleOpts(font_size=20, color="#1B69D4", font_family=('Berlin Sans FB'))),
+        , title_opts=opts.TitleOpts(title=titleIn,
+                                    subtitle='Update:'+datetime.now().strftime('%Y-%m-%d'))
     )
 
     c.render("..//html//lineTest.html")

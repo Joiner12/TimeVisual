@@ -1,132 +1,114 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Line 2021-08-30</title>
-    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
-</head>
+    <title>Line 2021-09-22</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+            <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
 
-<body>
-    <div id="606780724525471288595c4d0e0bbf6a" class="chart-container" style="position: absolute;width: 100%;height: 80%;left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);"></div>
+    <style type="text/css">
+            html,body{
+                height:98%;
+                width:98%
+            }
+        </style>
+</head>
+<body onresize="resizeFresh()">
+    <div id="b7163526fb7d48739e144ae0bf906a9a" class="chart-container" style="width:95%; height:95%; margin:auto; top:10px"></div>
     <script>
-        var chart_606780724525471288595c4d0e0bbf6a = echarts.init(
-            document.getElementById('606780724525471288595c4d0e0bbf6a'), 'white', { renderer: 'canvas' });
-        var option_606780724525471288595c4d0e0bbf6a = {
-            "backgroundColor": "#D6D7C5",
-            "animation": true,
-            "animationThreshold": 2000,
-            "animationDuration": 1000,
-            "animationEasing": "cubicOut",
-            "animationDelay": 0,
-            "animationDurationUpdate": 300,
-            "animationEasingUpdate": "cubicOut",
-            "animationDelayUpdate": 0,
-            "color": [
-                "#c23531",
-                "#2f4554",
-                "#61a0a8",
-                "#d48265",
-                "#749f83",
-                "#ca8622",
-                "#bda29a",
-                "#6e7074",
-                "#546570",
-                "#c4ccd3",
-                "#f05b72",
-                "#ef5b9c",
-                "#f47920",
-                "#905a3d",
-                "#fab27b",
-                "#2a5caa",
-                "#444693",
-                "#726930",
-                "#b2d235",
-                "#6d8346",
-                "#ac6767",
-                "#1d953f",
-                "#6950a1",
-                "#918597"
+        var chart_b7163526fb7d48739e144ae0bf906a9a = echarts.init(
+            document.getElementById('b7163526fb7d48739e144ae0bf906a9a'), 'white', {renderer: 'canvas'});
+        var option_b7163526fb7d48739e144ae0bf906a9a = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "color": [
+        "#c23531",
+        "#2f4554",
+        "#61a0a8",
+        "#d48265",
+        "#749f83",
+        "#ca8622",
+        "#bda29a",
+        "#6e7074",
+        "#546570",
+        "#c4ccd3",
+        "#f05b72",
+        "#ef5b9c",
+        "#f47920",
+        "#905a3d",
+        "#fab27b",
+        "#2a5caa",
+        "#444693",
+        "#726930",
+        "#b2d235",
+        "#6d8346",
+        "#ac6767",
+        "#1d953f",
+        "#6950a1",
+        "#918597"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "Period Event",
+            "connectNulls": false,
+            "symbol": "circle",
+            "symbolSize": 6,
+            "showSymbol": true,
+            "smooth": true,
+            "clip": true,
+            "step": false,
+            "data": [
+                [
+                    "78",
+                    42
+                ],
+                [
+                    "AOA\\AOD",
+                    5
+                ],
+                [
+                    "\u5f00\u4f1a",
+                    107
+                ],
+                [
+                    "paper",
+                    52
+                ],
+                [
+                    "\u53d1\u7968",
+                    79
+                ],
+                [
+                    "visual-code",
+                    60
+                ]
             ],
-            "series": [
-                {
-                    "type": "line",
-                    "name": "Period Event",
-                    "connectNulls": false,
-                    "symbol": "circle",
-                    "symbolSize": 6,
-                    "showSymbol": true,
-                    "smooth": true,
-                    "clip": true,
-                    "step": false,
-                    "data": [],
-                    "hoverAnimation": true,
-                    "label": {
-                        "show": true,
-                        "position": "top",
-                        "color": "blue",
-                        "margin": 8
-                    },
-                    "lineStyle": {
-                        "show": true,
-                        "width": 1,
-                        "opacity": 1,
-                        "curveness": 0,
-                        "type": "solid",
-                        "color": "#fff"
-                    },
-                    "areaStyle": {
-                        "opacity": 1,
-                        "color": new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#eb64fb' }, { offset: 1, color: '#3fbbff0d' }], false)
-                    },
-                    "tooltip": {
-                        "show": true,
-                        "trigger": "item",
-                        "triggerOn": "mousemove|click",
-                        "axisPointer": {
-                            "type": "line"
-                        },
-                        "showContent": true,
-                        "alwaysShowContent": false,
-                        "showDelay": 0,
-                        "hideDelay": 100,
-                        "textStyle": {
-                            "fontSize": 14
-                        },
-                        "borderWidth": 0,
-                        "padding": 5
-                    },
-                    "itemStyle": {
-                        "color": "red",
-                        "borderColor": "#fff",
-                        "borderWidth": 3
-                    },
-                    "zlevel": 0,
-                    "z": 0
-                }
-            ],
-            "legend": [
-                {
-                    "data": [
-                        "Period Event"
-                    ],
-                    "selected": {
-                        "Period Event": true
-                    },
-                    "show": true,
-                    "padding": 5,
-                    "itemGap": 10,
-                    "itemWidth": 25,
-                    "itemHeight": 14,
-                    "textStyle": {
-                        "color": "#1B69D4",
-                        "fontFamily": "Berlin Sans FB",
-                        "fontSize": 20
-                    }
-                }
-            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "position": "top",
+                "color": "blue",
+                "margin": 8
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid",
+                "color": "#fff"
+            },
+            "areaStyle": {
+                "opacity": 1,
+                "color": new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#eb64fb'}, {offset: 1, color: '#3fbbff0d'}], false)
+            },
             "tooltip": {
                 "show": true,
                 "trigger": "item",
@@ -144,126 +126,183 @@
                 "borderWidth": 0,
                 "padding": 5
             },
-            "xAxis": [
-                {
-                    "type": "category",
-                    "show": true,
-                    "scale": false,
-                    "nameLocation": "end",
-                    "nameGap": 15,
-                    "gridIndex": 0,
-                    "axisLine": {
-                        "show": false,
-                        "onZero": true,
-                        "onZeroAxisIndex": 0
-                    },
-                    "axisTick": {
-                        "show": true,
-                        "alignWithLabel": false,
-                        "inside": false,
-                        "length": 25,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid",
-                            "color": "#ffffff1f"
-                        }
-                    },
-                    "axisLabel": {
-                        "show": true,
-                        "position": "top",
-                        "color": "#8B8C7B",
-                        "margin": 8
-                    },
-                    "inverse": false,
-                    "offset": 0,
-                    "splitNumber": 5,
-                    "boundaryGap": false,
-                    "minInterval": 0,
-                    "splitLine": {
-                        "show": true,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid",
-                            "color": "#ffffff1f"
-                        }
-                    },
-                    "data": []
-                }
+            "itemStyle": {
+                "color": "red",
+                "borderColor": "#fff",
+                "borderWidth": 3
+            },
+            "zlevel": 0,
+            "z": 0
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "Period Event"
             ],
-            "yAxis": [
-                {
-                    "type": "value",
+            "selected": {
+                "Period Event": true
+            },
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5
+    },
+    "xAxis": [
+        {
+            "type": "category",
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "axisLine": {
+                "show": false,
+                "onZero": true,
+                "onZeroAxisIndex": 0
+            },
+            "axisTick": {
+                "show": true,
+                "alignWithLabel": false,
+                "inside": false,
+                "length": 25,
+                "lineStyle": {
                     "show": true,
-                    "scale": false,
-                    "nameLocation": "end",
-                    "nameGap": 15,
-                    "gridIndex": 0,
-                    "axisLine": {
-                        "show": true,
-                        "onZero": true,
-                        "onZeroAxisIndex": 0,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid",
-                            "color": "ffffff1f"
-                        }
-                    },
-                    "axisTick": {
-                        "show": true,
-                        "alignWithLabel": false,
-                        "inside": false,
-                        "length": 15,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid",
-                            "color": "#ffffff1f"
-                        }
-                    },
-                    "axisLabel": {
-                        "show": true,
-                        "position": "top",
-                        "color": "#8B8C7B",
-                        "margin": 20
-                    },
-                    "inverse": false,
-                    "position": "right",
-                    "offset": 0,
-                    "splitNumber": 5,
-                    "minInterval": 0,
-                    "splitLine": {
-                        "show": true,
-                        "lineStyle": {
-                            "show": true,
-                            "width": 1,
-                            "opacity": 1,
-                            "curveness": 0,
-                            "type": "solid",
-                            "color": "#ffffff1f"
-                        }
-                    }
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid",
+                    "color": "#ffffff1f"
                 }
-            ],
-            "title": [
-                {
-                    "padding": 5,
-                    "itemGap": 10
+            },
+            "axisLabel": {
+                "show": true,
+                "position": "top",
+                "color": "#8B8C7B",
+                "margin": 8
+            },
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "boundaryGap": false,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid",
+                    "color": "#ffffff1f"
                 }
+            },
+            "data": [
+                "78",
+                "AOA\\AOD",
+                "\u5f00\u4f1a",
+                "paper",
+                "\u53d1\u7968",
+                "visual-code"
             ]
-        };
-        chart_606780724525471288595c4d0e0bbf6a.setOption(option_606780724525471288595c4d0e0bbf6a);
+        }
+    ],
+    "yAxis": [
+        {
+            "type": "value",
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "axisLine": {
+                "show": true,
+                "onZero": true,
+                "onZeroAxisIndex": 0,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid",
+                    "color": "ffffff1f"
+                }
+            },
+            "axisTick": {
+                "show": true,
+                "alignWithLabel": false,
+                "inside": false,
+                "length": 15,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid",
+                    "color": "#ffffff1f"
+                }
+            },
+            "axisLabel": {
+                "show": true,
+                "position": "top",
+                "color": "#8B8C7B",
+                "margin": 20
+            },
+            "inverse": false,
+            "position": "right",
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid",
+                    "color": "#ffffff1f"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "text": "test data",
+            "subtext": "Update:2021-09-22",
+            "padding": 5,
+            "itemGap": 10
+        }
+    ]
+};
+        chart_b7163526fb7d48739e144ae0bf906a9a.setOption(option_b7163526fb7d48739e144ae0bf906a9a);
     </script>
+	<script>   
+		//窗口大小变化时候，进行刷新页面操作，防止样式混乱
+        var x=window.innerWidth;
+		function resizeFresh(){
+         if(x!=window.innerWidth)
+             location.reload();
+     }
+	</script>
 </body>
-
 </html>

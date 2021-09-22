@@ -19,10 +19,14 @@ from datetime import datetime
 """
 
 
-def DrawPie(valueDict=[list(z) for z in zip(Faker.choose(), Faker.values())]):
+def DrawPie(valueDict=[list(z) for z in zip(Faker.choose(), Faker.values())], **kw):
     data_b = [list(z) for z in zip(valueDict.keys(), valueDict.values())]
-    c = Pie(init_opts=opts.InitOpts(width="600px", height="500px",
-                                    page_title="dailyPie"+datetime.now().strftime('%Y-%m-%d')))
+    if 'title' in kw:
+        titleIn = kw['title']
+    else:
+        titleIn = 'test data'
+    c = Pie(init_opts=opts.InitOpts(
+        page_title="dailyPie"+datetime.now().strftime('%Y-%m-%d')))
     c.add(
         "",
         data_b,
@@ -68,7 +72,7 @@ def DrawPie(valueDict=[list(z) for z in zip(Faker.choose(), Faker.values())]):
         ),
     )
     c.set_global_opts(title_opts=opts.TitleOpts(
-        title="Pie-Daily"))
+        title=titleIn, subtitle='Update:'+datetime.now().strftime('%Y-%m-%d')))
     c.render("..//html//pieTest.html")
     print("daily pie run finished...\n")
     return c

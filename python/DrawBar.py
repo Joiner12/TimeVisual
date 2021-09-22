@@ -6,7 +6,11 @@ from pyecharts.commons.utils import JsCode
 from datetime import datetime
 
 
-def DrawBar(xData=Faker.choose(), yData=Faker.values()):
+def DrawBar(xData=Faker.choose(), yData=Faker.values(), **kw):
+    if 'title' in kw:
+        titleIn = kw['title']
+    else:
+        titleIn = 'test data'
     xDataIn = xData
     yDataIn = yData
     c = Bar(init_opts=opts.InitOpts(page_title="Bar " +
@@ -30,8 +34,10 @@ def DrawBar(xData=Faker.choose(), yData=Faker.values()):
             }
         }
     )
-    c.set_global_opts(title_opts=opts.TitleOpts(title=""),
-                      yaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(formatter="{value} /min")))
+    c.set_global_opts(title_opts=opts.TitleOpts(
+        title=titleIn,
+        subtitle='Update:'+datetime.now().strftime('%Y-%m-%d')),
+        yaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(formatter="{value} /min")))
     c.render("..//html//barTest.html")
 
     print("draw Bar run finished...\n")

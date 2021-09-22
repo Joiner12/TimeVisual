@@ -9,6 +9,7 @@ from pyecharts import options as opts
 from pyecharts.charts import Geo
 from pyecharts.globals import ChartType, SymbolType
 import pandas as pd
+from datetime import datetime
 
 extraPosition = {
     "多哈": (25.261101, 51.565102),
@@ -29,7 +30,11 @@ extraPosition = {
 
 
 def DrawMap(FlightArrivalFile="..//data//FlightArrival.xlsx",
-            FlightDepartureFile="..//data//FlightDeparture.xlsx"):
+            FlightDepartureFile="..//data//FlightDeparture.xlsx",**kw):
+    if 'dataDay' in kw:
+        dataDay = kw['dataDay']
+    else:
+        dataDay = 'test Day'
     # load data from excle
     ArrialInfo = pd.read_excel(FlightArrivalFile)
     DepartureInfo = pd.read_excel(FlightDepartureFile)
@@ -77,8 +82,7 @@ def DrawMap(FlightArrivalFile="..//data//FlightArrival.xlsx",
 
     geoAd = geoData2+geoData3
 
-    c = Geo(init_opts=opts.InitOpts(width="900px", height="500px", page_title="Map-CDC",
-            theme="light", bg_color="transparent"))
+    c = Geo(init_opts=opts.InitOpts(page_title="Map-CDC",theme="light", bg_color="transparent"))
     # 添加其他位置
     for j in extraPosition.keys():
         c.add_coordinate(j, extraPosition[j][1], extraPosition[j][0])
@@ -102,8 +106,9 @@ def DrawMap(FlightArrivalFile="..//data//FlightArrival.xlsx",
                                           color="#475EEA"),
               linestyle_opts=opts.LineStyleOpts(curve=0.3, opacity=0.1, color="#5A98D4"))
         c.set_series_opts(label_opts=opts.LabelOpts(is_show=False))
-        c.set_global_opts(title_opts=opts.TitleOpts(title="Shuangliu Internatinal Airport",
-                                                    subtitle="Chengdu"),
+        c.set_global_opts(title_opts=opts.TitleOpts(title="Shuangliu Internatinal Airport-"+dataDay,
+                                                    subtitle="Update:"
+                                                    +datetime.now().strftime('%Y-%m-%d')),
                           visualmap_opts=opts.VisualMapOpts(is_piecewise=True, max_=50))
         c.render("..//html//geoTest.html")
     print("draw map run finished...\n")
