@@ -17,94 +17,37 @@ body {
   /* opacity: 0.2;
   filter: none; */
 }
-iframe {
-  position: absolute;
-  width: 100%;
-  height: 90%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -45%);
-}
-.chart-container {
-  position: absolute;
-  width: 100%;
-  height: 90%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -45%);
-  background-color: #d6d7c5;
-  opacity: 0.5;
-  filter: none;
+
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-size: 14pt;
 }
 
-.btn-pie-position {
-  position: absolute;
-  left: 1%;
-  top: 95%;
-}
-
-.btn-bar-position {
-  position: absolute;
-  left: 6%;
-  top: 95%;
-}
-
-.btn-line-position {
-  position: absolute;
-  left: 11%;
-  top: 95%;
-}
-
-.btn-map-position {
-  position: absolute;
-  left: 16%;
-  top: 95%;
-}
-.btn-base {
-  /*去掉下划线*/
-  text-decoration: none;
-  /* position: absolute;
-  left: 1%;
-  top: 95%; */
-  /* transform: translate(1%, -50%); */
-  /* 设置字体大小 */
-  font-size: 20px;
-  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
-  background-size: 400%;
-  width: 80px;
+#nav {
   height: 40px;
-  line-height: 20px;
-  text-align: center;
-  color: #fff;
-  /* 字母变大写 */
-  text-transform: uppercase;
-  /* 设置成胶囊状 */
-  border-radius: 50px;
-  z-index: 1;
+  border-top: rgb(221, 228, 221) 2px solid;
 }
-/* 设置发光 */
-.btn-base::before {
-  content: "";
-  position: absolute;
-  left: -5px;
-  right: -5px;
-  top: -5px;
-  bottom: -5px;
-  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
-  background-size: 400%;
-  border-radius: 50px;
-  filter: blur(20px);
-  z-index: -1;
+
+#nav ul {
+  list-style: none;
+  margin-left: 10px;
 }
-.btn-base:hover::before {
-  animation: sun 8s infinite;
+
+#nav li {
+  display: inline;
+  line-height: 40px;
+  float: left;
+  font-family: Impact;
 }
-.btn-base:hover {
-  animation: sun 8s infinite;
+
+#nav a {
+  color: rgb(126, 181, 212);
+  text-decoration: none;
+  padding: 10px 10px;
 }
-/* 设置流光 */
-@keyframes sun {
-  100% {
-    background-position: -400% 0;
-  }
+
+#nav a:hover {
+  background-color: rgb(168, 191, 206);
 }
