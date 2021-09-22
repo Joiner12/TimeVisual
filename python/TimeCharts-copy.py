@@ -3,9 +3,11 @@
     根据gatte-test.xlsx中记录的数据生成各种pyehcharts图。
 """
 from os import path
+
+from pyecharts.faker import Faker
 from readDataFromExcel import DataFromExcel
 import math
-from datetime import datetime
+from datetime import datetime, date
 import pandas as pd
 from DrawBar import DrawBar
 from DrawMap import DrawMap
@@ -43,16 +45,19 @@ class TimeCharts():
             pyecharts-Pie
     """
 
-    def getDateSpecTime(self, startDay: str = "today", endDay: str = "today", meansSelector=0):
+    def getDateSpecTime(self,
+                        startDay: str = "today",
+                        endDay: str = "today",
+                        meansSelector=0):
         setTimeStrFormat = '%Y-%m-%d'
         retSegData = pd.DataFrame(columns=['起始', '终止', '事件', '时长', 'other'])
         if startDay == "today":
-            startDay_i = datetime.now()
+            startDay_i = datetime.combine(date.today(), datetime.min.time())
         else:
             startDay_i = datetime.strptime(startDay, setTimeStrFormat)
 
         if endDay == "today":
-            endDay_i = datetime.now()
+            endDay_i = datetime.combine(date.today(), datetime.min.time())
         else:
             endDay_i = datetime.strptime(endDay, setTimeStrFormat)
         # DataFrame包含excel sheet name
@@ -82,9 +87,10 @@ class TimeCharts():
             curSheet = self.exlsData
             startTickList = curSheet['起始'].tolist()
             for j in startTickList:
-                # 'datetime.time' -> 'datetime.datetime'
+                # year month day
                 jJudge = j.strftime(setTimeStrFormat)
                 jJudge = datetime.strptime(jJudge, setTimeStrFormat)
+
                 if jJudge >= startDay_i and jJudge <= endDay_i:
                     curIndex = startTickList.index(j)
 
@@ -118,10 +124,10 @@ class TimeCharts():
         # today
         startDayIn = startDay
         endDayIn = endDay
-        dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+        dataDraw = self.getDateSpecTime(startDayIn, endDayIn, meansSelector=1)
         pieData = mergeListToDict(dataDraw['事件'].tolist(),
                                   dataDraw['时长'].tolist())
-        return DrawPie(pieData)
+        return DrawPie(pieData, title=endDay)
 
     """
         function:
@@ -142,7 +148,7 @@ class TimeCharts():
             eventList = self.exlsData['事件'].tolist()
             eventStr = str()
             for j in eventList:
-                eventStr += str(j)+"-"
+                eventStr += str(j) + "-"
             eventSplit = eventStr.split("-")
             for k in eventSplit:
                 if k in word_dict.keys():
@@ -169,7 +175,11 @@ class TimeCharts():
             pyecharts-Line
     """
 
-    def dailyLine(self, day="today"):
+    def dailyLine(self, day="today", **kw):
+        # def dailyLine(self, startDay: str = "today", endDay: str = "today", **kw):
+        # startDayIn = startDay
+        # endDayIn = endDay
+        # dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
         try:
             setTimeStrFormat = '%Y-%m-%d'
             if day == "today":
@@ -191,15 +201,15 @@ class TimeCharts():
                         if str(curSheet.iloc[curIndex, 2]) in event_x:
                             timeStampTemp = j.strftime("%H-%M")
                             event_x.append(
-                                str(curSheet.iloc[curIndex, 2])+timeStampTemp)
+                                str(curSheet.iloc[curIndex, 2]) +
+                                timeStampTemp)
                         else:
                             event_x.append(str(curSheet.iloc[curIndex, 2]))
                         event_y.append(int(curSheet.iloc[curIndex, 3]))
             xDataIn = event_x
             yDataIn = event_y
         except:
-            xDataIn = ['78', 'AOA\\AOD', '开会',
-                       'paper', '发票', 'visual-code']
+            xDataIn = ['78', 'AOA\\AOD', '开会', 'paper', '发票', 'visual-code']
             yDataIn = [42, 5, 107, 52, 79, 60]
         return DrawLine(xDataIn, yDataIn)
 
@@ -258,9 +268,9 @@ class TimeCharts():
 
     def flightMap(self, updateData=False):
         if updateData:
-            filePostfix = datetime.now().strftime("%Y-%m-%d")+".xlsx"
-            ArrivalFile = "..//data//FlightArrival-"+filePostfix
-            DepartureFile = "..//data//FlightDeparture-"+filePostfix
+            filePostfix = datetime.now().strftime("%Y-%m-%d") + ".xlsx"
+            ArrivalFile = "..//data//FlightArrival-" + filePostfix
+            DepartureFile = "..//data//FlightDeparture-" + filePostfix
             if not path.isfile(ArrivalFile) or not path.isfile(DepartureFile):
                 FlightInfo(ArrivalFile, DepartureFile)
         else:
@@ -268,6 +278,7 @@ class TimeCharts():
             DepartureFile = "..//data//FlightDeparture-2021-08-13.xlsx"
         return DrawMap(FlightArrivalFile=ArrivalFile,
                        FlightDepartureFile=DepartureFile)
+
     """
     函数:
         水平时间线(图)
@@ -325,27 +336,27 @@ def mergeListToDict(list_name, list_value):
 
 def mainPage():
     # generate module
-    mainHtml = "..//html//mainpage.html"
+    # mainHtml = "..//html//mainpage.html"
     Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
-    pieCt = Tc_1.dailyPie(startDay="2021-08-12",
-                          endDay=datetime.now().strftime("%Y-%m-%d"))
-    wordcloudCt = Tc_1.periodWordCloud()
-    lineCt = Tc_1.dailyLine()
-    barCt = Tc_1.dailyBar()
-    mapCt = Tc_1.flightMap(updateData=False)
-    imageCt = Tc_1.horizontalLineImage()
-    # main page
-    mainpage = Page(page_title="😁 Daily life 😁")
-    mainpage.add(pieCt)
-    mainpage.add(lineCt)
-    mainpage.add(mapCt)
-    mainpage.add(barCt)
-    mainpage.add(wordcloudCt)
-    mainpage.add(imageCt)
-    mainpage.render(mainHtml)
+    pieCt = Tc_1.dailyPie()
+    # wordcloudCt = Tc_1.periodWordCloud()
+    # lineCt = Tc_1.dailyLine()
+    # barCt = Tc_1.dailyBar()
+    # mapCt = Tc_1.flightMap(updateData=False)
+    if False:
+        imageCt = Tc_1.horizontalLineImage()
+        # main page
+        mainpage = Page(page_title="😁 Daily life 😁")
+        mainpage.add(pieCt)
+        mainpage.add(lineCt)
+        mainpage.add(mapCt)
+        mainpage.add(barCt)
+        mainpage.add(wordcloudCt)
+        mainpage.add(imageCt)
+        mainpage.render(mainHtml)
 
-    # 调整main page 布局
-    adjustMainPage(mainHtml)
+        # 调整main page 布局
+        adjustMainPage(mainHtml)
     print("main page run finished...")
 
 
@@ -401,6 +412,5 @@ if __name__ == "__main__":
         mainPage()
         # adjustMainPage()
     else:
-        Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
-        ti = Tc_1.getDateSpecTime(
-            startDay="2021-8-9", endDay="2021-8-9", meansSelector=1)
+        Tc_1 = TimeCharts('..//data//gatte-test-1.xlsx')
+        pieCt = Tc_1.dailyPie()

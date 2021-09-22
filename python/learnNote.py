@@ -258,3 +258,8 @@ ax.text(2.25, 0.55, '(default)', ha='center')
 ax.set_ylim(-.5, 1.5)
 ax.set_axis_off()
 fig.show()
+
+#%% 
+from datetime import date,datetime
+a = datetime.combine((date.today()), datetime.min.time())
+print(a)
