@@ -17,10 +17,14 @@ from datetime import datetime
 """
 
 
-def DrawWordCloud(words, backgroundpic=""):
+def DrawWordCloud(words, *w, **kw):
     c = WordCloud(init_opts=opts.InitOpts(
         page_title="word cloud "+datetime.now().strftime('%Y-%m-%d'),
         theme="shine"))
+    if 'backgroundpic' in kw:
+        backgroundpic = kw['backgroundpic']
+    else:
+        backgroundpic = str()
     if not path.isfile(backgroundpic):
         c.add("",
               words,
