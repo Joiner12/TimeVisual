@@ -2,12 +2,12 @@
 """
     根据gatte-test.xlsx中记录的数据生成各种pyehcharts图。
 """
-from os import path
+from os import path, listdir, remove
 
 from pyecharts.faker import Faker
 from readDataFromExcel import DataFromExcel
 import math
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import pandas as pd
 from DrawBar import DrawBar
 from DrawMap import DrawMap
@@ -15,9 +15,8 @@ from DrawLine import DrawLine
 from DrawWordCloud import DrawWordCloud
 from DrawPie import DrawPie
 from GetFlightInfo import FlightInfo
-from pyecharts.charts import Page
 from bs4 import BeautifulSoup
-from DrawImage import DrawImage
+from DrawImage import UpdateTimeLineImage
 
 
 class TimeCharts():
@@ -48,7 +47,7 @@ class TimeCharts():
     def getDateSpecTime(self,
                         startDay: str = "today",
                         endDay: str = "today",
-                        meansSelector=0):
+                        **kw):
         setTimeStrFormat = '%Y-%m-%d'
         retSegData = pd.DataFrame(columns=['起始', '终止', '事件', '时长', 'other'])
         if startDay == "today":
@@ -57,54 +56,29 @@ class TimeCharts():
             startDay_i = datetime.strptime(startDay, setTimeStrFormat)
 
         if endDay == "today":
-            endDay_i = datetime.combine(date.today(), datetime.min.time())
+            endDay_i = datetime.combine(
+                date.today(), datetime.min.time())+timedelta(days=1)
         else:
             endDay_i = datetime.strptime(endDay, setTimeStrFormat)
-        # DataFrame包含excel sheet name
-        if meansSelector == 0:
-            key_name = list(self.exlsData.keys())
-            for k in key_name:
-                curSheet = self.exlsData[k]
-                startTickList = curSheet['起始'].tolist()
-                for j in startTickList:
-                    # 'datetime.time' -> 'datetime.datetime'
-                    jJudge = j.strftime(setTimeStrFormat)
-                    jJudge = datetime.strptime(jJudge, setTimeStrFormat)
-                    if jJudge >= startDay_i and jJudge <= endDay_i:
-                        curIndex = startTickList.index(j)
+        curSheet = self.exlsData
+        startTickList = curSheet['起始'].tolist()
+        for j in startTickList:
+            # year month day
+            jJudge = j.strftime(setTimeStrFormat)
+            jJudge = datetime.strptime(jJudge, setTimeStrFormat)
 
-                        retSegData = retSegData.append(
-                            {
-                                '起始': curSheet.iloc[curIndex, 0],
-                                '终止': curSheet.iloc[curIndex, 1],
-                                '事件': curSheet.iloc[curIndex, 2],
-                                '时长': curSheet.iloc[curIndex, 3],
-                                'other': curSheet.iloc[curIndex, 4],
-                            },
-                            ignore_index=True)
-        # DataFrame不包含excel sheet name
-        elif meansSelector == 1:
-            curSheet = self.exlsData
-            startTickList = curSheet['起始'].tolist()
-            for j in startTickList:
-                # year month day
-                jJudge = j.strftime(setTimeStrFormat)
-                jJudge = datetime.strptime(jJudge, setTimeStrFormat)
+            if jJudge >= startDay_i and jJudge <= endDay_i:
+                curIndex = startTickList.index(j)
 
-                if jJudge >= startDay_i and jJudge <= endDay_i:
-                    curIndex = startTickList.index(j)
-
-                    retSegData = retSegData.append(
-                        {
-                            '起始': curSheet.iloc[curIndex, 0],
-                            '终止': curSheet.iloc[curIndex, 1],
-                            '事件': curSheet.iloc[curIndex, 2],
-                            '时长': curSheet.iloc[curIndex, 3],
-                            'other': curSheet.iloc[curIndex, 4],
-                        },
-                        ignore_index=True)
-        else:
-            pass
+                retSegData = retSegData.append(
+                    {
+                        '起始': curSheet.iloc[curIndex, 0],
+                        '终止': curSheet.iloc[curIndex, 1],
+                        '事件': curSheet.iloc[curIndex, 2],
+                        '时长': curSheet.iloc[curIndex, 3],
+                        'other': curSheet.iloc[curIndex, 4],
+                    },
+                    ignore_index=True)
         return retSegData
 
     """
@@ -121,13 +95,21 @@ class TimeCharts():
     """
 
     def dailyPie(self, startDay: str = "today", endDay: str = "today", **kw):
-        # today
-        startDayIn = startDay
-        endDayIn = endDay
-        dataDraw = self.getDateSpecTime(startDayIn, endDayIn, meansSelector=1)
-        pieData = mergeListToDict(dataDraw['事件'].tolist(),
-                                  dataDraw['时长'].tolist())
-        return DrawPie(pieData, title=endDay)
+        try:
+            # today
+            startDayIn = startDay
+            endDayIn = endDay
+            dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+            pieData = mergeListToDict(dataDraw['事件'].tolist(),
+                                      dataDraw['时长'].tolist())
+            titleIn = startDay
+            if startDay == "today":
+                titleIn = date.today().strftime('%Y-%m-%d')
+            # throw out error:ZeroDivisionError: division by zero
+            1/len(pieData)
+            return DrawPie(pieData, title=titleIn)
+        except:
+            return DrawPie(pieData, title=titleIn)
 
     """
         function:
@@ -141,11 +123,18 @@ class TimeCharts():
             pyecharts-Pie
     """
 
-    def periodWordCloud(self):
+    def periodWordCloud(self, endDay="today", *k, **kw):
         try:
+            endDayIn = endDay
+            if endDay == "today":
+                endDayIn = date.today().strftime('%Y-%m-%d')
+            startDayIn = datetime.strptime(
+                endDayIn, '%Y-%m-%d')-timedelta(days=7)
+            startDayIn = startDayIn.strftime('%Y-%m-%d')
+            dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
             word_dict = dict()
             word_mesh = list()
-            eventList = self.exlsData['事件'].tolist()
+            eventList = dataDraw['事件'].tolist()
             eventStr = str()
             for j in eventList:
                 eventStr += str(j) + "-"
@@ -157,6 +146,8 @@ class TimeCharts():
                     word_dict[k] = 1
             for i in word_dict.keys():
                 word_mesh.append([i, word_dict[i]])
+            # check the list is empty
+            1/len(word_mesh)
         except:
             word_mesh = [("幺鸡", "12"), ("垮", "50"), ("🀍", "7"), ("LOL", "20"),
                          ("🔞", "3"), ("pubg", "15"), ("🤣", "21"), ("杠", "18"),
@@ -175,43 +166,30 @@ class TimeCharts():
             pyecharts-Line
     """
 
-    def dailyLine(self, day="today", **kw):
-        # def dailyLine(self, startDay: str = "today", endDay: str = "today", **kw):
-        # startDayIn = startDay
-        # endDayIn = endDay
-        # dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+    def dailyLine(self, startDay: str = "today", endDay: str = "today", **kw):
         try:
-            setTimeStrFormat = '%Y-%m-%d'
-            if day == "today":
-                Day_i = datetime.now().strftime("%Y-%m-%d")
-            else:
-                Day_i = day
-
-            key_name = list(self.exlsData.keys())
+            startDayIn = startDay
+            endDayIn = endDay
+            titleIn = startDay
+            dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+            startTickList = dataDraw['起始'].tolist()
+            if startDay == "today":
+                titleIn = date.today().strftime('%Y-%m-%d')
             event_x = list()
             event_y = list()
-            for k in key_name:
-                curSheet = self.exlsData[k]
-                startTickList = curSheet['起始'].tolist()
-                for j in startTickList:
-                    # 'datetime.time' -> 'datetime.datetime'
-                    jJudge = j.strftime(setTimeStrFormat)
-                    if jJudge == Day_i:
-                        curIndex = startTickList.index(j)
-                        if str(curSheet.iloc[curIndex, 2]) in event_x:
-                            timeStampTemp = j.strftime("%H-%M")
-                            event_x.append(
-                                str(curSheet.iloc[curIndex, 2]) +
-                                timeStampTemp)
-                        else:
-                            event_x.append(str(curSheet.iloc[curIndex, 2]))
-                        event_y.append(int(curSheet.iloc[curIndex, 3]))
+            for j in startTickList:
+                curIndex = startTickList.index(j)
+                event_x.append(
+                    str(dataDraw.iloc[curIndex, 2]) + '\n' + j.strftime("%H-%M"))
+                event_y.append(int(dataDraw.iloc[curIndex, 3]))
             xDataIn = event_x
             yDataIn = event_y
+            1/(len(xDataIn)*len(yDataIn))
         except:
-            xDataIn = ['78', 'AOA\\AOD', '开会', 'paper', '发票', 'visual-code']
-            yDataIn = [42, 5, 107, 52, 79, 60]
-        return DrawLine(xDataIn, yDataIn)
+            xDataIn = Faker.choose()
+            yDataIn = Faker.values()
+            titleIn = "Test Data"
+        return DrawLine(xDataIn, yDataIn, title=titleIn)
 
     """
         function:
@@ -224,36 +202,30 @@ class TimeCharts():
             pyecharts-Bar
     """
 
-    def dailyBar(self, day="today"):
+    def dailyBar(self, startDay: str = "today", endDay: str = "today", **kw):
         try:
-            setTimeStrFormat = '%Y-%m-%d'
-            if day == "today":
-                Day_i = datetime.now().strftime("%Y-%m-%d")
-            else:
-                Day_i = day
-            key_name = list(self.exlsData.keys())
+            startDayIn = startDay
+            endDayIn = endDay
+            titleIn = startDay
+            dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+            startTickList = dataDraw['起始'].tolist()
+            if startDay == "today":
+                titleIn = date.today().strftime('%Y-%m-%d')
             event_x = list()
             event_y = list()
-            for k in key_name:
-                curSheet = self.exlsData[k]
-                startTickList = curSheet['起始'].tolist()
-                for j in startTickList:
-                    # 'datetime.time' -> 'datetime.datetime'
-                    jJudge = j.strftime(setTimeStrFormat)
-                    if jJudge == Day_i:
-                        curIndex = startTickList.index(j)
-                        event_x.append(str(curSheet.iloc[curIndex, 2]))
-                        event_y.append(int(curSheet.iloc[curIndex, 3]))
+            for j in startTickList:
+                curIndex = startTickList.index(j)
+                event_x.append(
+                    str(dataDraw.iloc[curIndex, 2]) + '\n' + j.strftime("%H-%M"))
+                event_y.append(int(dataDraw.iloc[curIndex, 3]))
             xDataIn = event_x
             yDataIn = event_y
+            1/(len(xDataIn)*len(yDataIn))
         except:
-            xDataIn = ['78', 'AOA\\AOD', '开会', 'paper', '发票', 'visual-code']
-            yDataIn = [42, 5, 107, 52, 79, 60]
-        # 无数据情况处理
-        if len(xDataIn) == 0 or len(yDataIn) == 0:
-            xDataIn = ['78', 'AOA\\AOD', '开会', 'paper', '发票', 'visual-code']
-            yDataIn = [42, 5, 107, 52, 79, 60]
-        return DrawBar(xDataIn, yDataIn)
+            xDataIn = Faker.choose()
+            yDataIn = Faker.values()
+            titleIn = "Test Data"
+        return DrawBar(xDataIn, yDataIn, title=titleIn)
 
     """
     函数:
@@ -266,7 +238,19 @@ class TimeCharts():
         pyecharts,geo
     """
 
-    def flightMap(self, updateData=False):
+    def flightMap(self, updateData=True, *k, **kw):
+        # delte other flight infomation data
+        if 'removeFlightData' in kw and kw['removeFlightData']:
+            dataRelPath = './/..//data'
+            remainData = ['FlightDeparture-test.xlsx', 'FlightArrival-test.xlsx',
+                          'FlightDeparture-'+datetime.now().strftime('%Y-%m-%d')+'.xlsx',
+                          'FlightArrival-'+datetime.now().strftime('%Y-%m-%d')+'.xlsx']
+            a = listdir(dataRelPath)
+            b = path.abspath(dataRelPath)
+            for k in a:
+                if (not k in remainData) and ('Flight' in k):
+                    remove(path.join(b, k))
+        # path.listdir()
         if updateData:
             filePostfix = datetime.now().strftime("%Y-%m-%d") + ".xlsx"
             ArrivalFile = "..//data//FlightArrival-" + filePostfix
@@ -274,8 +258,8 @@ class TimeCharts():
             if not path.isfile(ArrivalFile) or not path.isfile(DepartureFile):
                 FlightInfo(ArrivalFile, DepartureFile)
         else:
-            ArrivalFile = "..//data//FlightArrival-2021-08-13.xlsx"
-            DepartureFile = "..//data//FlightDeparture-2021-08-13.xlsx"
+            ArrivalFile = "..//data//FlightArrival-test.xlsx"
+            DepartureFile = "..//data//FlightDeparture-test.xlsx"
         return DrawMap(FlightArrivalFile=ArrivalFile,
                        FlightDepartureFile=DepartureFile)
 
@@ -290,10 +274,25 @@ class TimeCharts():
         pyecharts,image
     """
 
-    def horizontalLineImage(self):
-        # step 1:更新图片
-        # step 2:刷新网页
-        return DrawImage()
+    def horizontalLineImage(self, startDay: str = "today", endDay: str = "today", **kw):
+        try:
+            startDayIn = startDay
+            endDayIn = endDay
+            dataDraw = self.getDateSpecTime(startDayIn, endDayIn)
+            startTickList = dataDraw['起始'].tolist()
+            startTickIn = [x.strftime("%Y-%m-%d %H:%M:%S")
+                           for x in startTickList]
+            eventNameIn = [str(y) for y in dataDraw['事件'].tolist()]
+            eventLastIn = [int(z) for z in dataDraw['时长'].tolist()]
+        except:
+            startTickIn = ['2021-08-09 09:00:00', '2021-08-09 09:45:00',
+                           '2021-08-09 11:11:00', '2021-08-09 14:30:00',
+                           '2021-08-09 15:18:00',
+                           '2021-08-09 16:40:00', '2021-08-09 17:19:00']
+            eventNameIn = ['开会', '发票', 'visual-code', '舆情分析',
+                           'AOA-Paper', 'AOA-Paper', 'visual-code']
+            eventLastIn = [30, 78, 33, 47, 69, 39, 15]
+        UpdateTimeLineImage(startTickIn, eventNameIn, eventLastIn)
 
 
 """
@@ -329,65 +328,13 @@ def mergeListToDict(list_name, list_value):
     return mergeDict
 
 
-"""
-    main page
-"""
-
-
-def mainPage():
-    # generate module
-    # mainHtml = "..//html//mainpage.html"
-    Tc_1 = TimeCharts('..//data//gatte-test.xlsx')
-    pieCt = Tc_1.dailyPie()
-    # wordcloudCt = Tc_1.periodWordCloud()
-    # lineCt = Tc_1.dailyLine()
-    # barCt = Tc_1.dailyBar()
-    # mapCt = Tc_1.flightMap(updateData=False)
-    if False:
-        imageCt = Tc_1.horizontalLineImage()
-        # main page
-        mainpage = Page(page_title="😁 Daily life 😁")
-        mainpage.add(pieCt)
-        mainpage.add(lineCt)
-        mainpage.add(mapCt)
-        mainpage.add(barCt)
-        mainpage.add(wordcloudCt)
-        mainpage.add(imageCt)
-        mainpage.render(mainHtml)
-
-        # 调整main page 布局
-        adjustMainPage(mainHtml)
-    print("main page run finished...")
-
-
-def adjustMainPage(mainpagefile="..//html//mainpage.html"):
+def modifyMainPage(mainpagefile="..//html//mainpage.html"):
     with open(mainpagefile, "r+", encoding='utf-8') as html:
         html_bf = BeautifulSoup(html, 'lxml')
-
-        divs = html_bf.select('.chart-container')
-        # pie
-        divs[0]['style'] = "width:900px;height:500px;position:absolute;" + \
-            "top:85px;left:0px;border-style:solid;border-color:#444444;border-width:0px;"
-        # map
-        divs[2]["style"] = "width:900px;height:500px;position:absolute;" + \
-            "top:85px;left:960px;border-style:solid;border-color:#444444;border-width:0px;"
-        # line
-        divs[1]["style"] = "width:900px;height:480px;position:absolute;" + \
-            "top:600px;left:0px;border-style:solid;border-color:#444444;border-width:0px;"
-        # bar
-        divs[3]["style"] = "width:900px;height:480px;position:absolute;" + \
-            "top:600px;left:960px;border-style:solid;border-color:#444444;border-width:0px;"
-        # wordcloud
-        divs[4]["style"] = "width:300px;height:300px;position:absolute;" + \
-            "top:200px;left:760px;border-style:solid;border-color:#444444;border-width:0px;"
-        # image
-        divs[5]["style"] = "width:1800px;height:1200px;position:absolute;" + \
-            "top:1100px;left:0px;border-style:solid;border-color:#444444;border-width:0px;" +\
-            "text-align:center;"
         # 修改网页背景色
         body = html_bf.find("body")
         body["style"] = "background-color:#D6D7C5;"
-        # 增加header标签
+        # 修改header标签
         header = html_bf.find("header")
         if header is None:
             header = html_bf.new_tag("header")
@@ -395,11 +342,6 @@ def adjustMainPage(mainpagefile="..//html//mainpage.html"):
         header.string = datetime.now().strftime("%Y-%m-%d")
         header["style"] = "background-color:#D6D7C5;font-size:50px;" + \
             "text-align:center;font-family:'Impact';"+"color:#58B4B9;"
-        # 增加分割线
-        hr = html_bf.find("hr")
-        if hr is None:
-            hr = html_bf.new_tag("hr")
-            html_bf.html.body.insert(2, hr)
         html_new = str(html_bf)
         html.seek(0, 0)
         html.truncate()
@@ -407,10 +349,23 @@ def adjustMainPage(mainpagefile="..//html//mainpage.html"):
         html.close()
 
 
+"""
+    main page
+"""
+
+
+def mainPage():
+    # generate module
+    Tc_1 = TimeCharts('..//data//gatte-test-1.xlsx')
+    Tc_1.dailyPie(startDay="2021-09-22", endDay="2021-09-23")
+    Tc_1.periodWordCloud(endDay="2021-09-23")
+    Tc_1.dailyLine(startDay="2021-09-22", endDay="2021-09-23")
+    Tc_1.dailyBar(startDay="2021-09-22", endDay="2021-09-23")
+    Tc_1.flightMap(updateData=True, removeFlightData=True)
+    if True:
+        modifyMainPage()
+
+
 if __name__ == "__main__":
-    if False:
-        mainPage()
-        # adjustMainPage()
-    else:
-        Tc_1 = TimeCharts('..//data//gatte-test-1.xlsx')
-        pieCt = Tc_1.dailyPie()
+    mainPage()
+    print('main page run finished....')

@@ -16,7 +16,7 @@ plt.rcParams['font.sans-serif'] = ['KaiTi']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-def DrawImage(imgUrl="../html/pic/horizontalLine.png"):
+def DrawImage(imgUrl="../html/pic/horizontalLine.png", **kw):
     image = Image()
     # check file exists
     if not path.isfile(imgUrl):
@@ -41,39 +41,26 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
                                      '2021-08-09 16:40:00', '2021-08-09 17:19:00'],
                         eventName_x=['开会', '发票', 'visual-code', '舆情分析',
                                      'AOA-Paper', 'AOA-Paper', 'visual-code'],
-                        eventLast_x=[30, 78, 33, 47, 69, 39, 15]):
+                        eventLast_x=[30, 78, 33, 47, 69, 39, 15], *k, **kw):
     colors = ['#E5562D', '#E0A459', '#CFBE65', '#A8CF65', '#6FD67D', '#68D5AE'
               '#6FD0DB', '#5294D0', '#595CD0', '#9E59D0', '#D05994']
-    # data preprocession
     # datetime-str→datetime→baseline→gap
-
+    # Create the base bar from 5am to 1am
     startTick_t = [datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
                    for x in startTick_x]
     zeroTick_t = datetime.strptime(datetime.strftime(
-        startTick_t[1], "%Y-%m-%d")+" 07:00:00", "%Y-%m-%d %H:%M:%S")
+        startTick_t[1], "%Y-%m-%d")+" 05:00:00", "%Y-%m-%d %H:%M:%S")
     endTick_t = zeroTick_t+timedelta(hours=19)
     eventName = eventName_x
-
     eventLast = eventLast_x
-    # startTick_t = [datetime.strptime(ii, "%Y-%m-%d %H:%M:%S")
-    #                for ii in startTick_t]
     levels = np.array([-5, 5, -3, 3, -1, 1])
     fig, ax = plt.subplots(figsize=(36, 36*0.5625),
-                           facecolor='#D6D7C5', dpi=200)
-
-    # Create the base bar from 5am to 1am
-    start = datetime.strptime('2021-08-09 05:00:00', '%Y-%m-%d %H:%M:%S')
-    stop = datetime.strptime('2021-08-10 02:00:00', '%Y-%m-%d %H:%M:%S')
-    baseGapMin = (stop-start).total_seconds()/60
+                           facecolor='#D6D7C5', dpi=500)
+    baseGapMin = (endTick_t-zeroTick_t).total_seconds()/60
     ax.set(facecolor="#D6D7C5")
-    if True:
-        ax.broken_barh(
-            [(0, baseGapMin)], (-1/2, 1), alpha=.5,
-            facecolors='#ace9e8', edgecolors='white', lw=4, capstyle='round')
-    else:
-        ax.arrow(
-            0, 0, baseGapMin, 0, width=0.01, length_includes_head=False,
-            head_width=0.25, head_length=25, ec='white')
+    ax.broken_barh(
+        [(0, baseGapMin)], (-1/2, 1), alpha=.5,
+        facecolors='#ace9e8', edgecolors='white', lw=4, capstyle='round')
 
     ax.set_ylim(-8, 8)
     # set as page background image no need title
@@ -83,7 +70,7 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
         level = levels[ii % 6]
         vert = 'top' if level < 0 else 'bottom'
         # tickTemp = datetime.strptime(itick, "%Y-%m-%d %H:%M:%S")
-        curPointX = (itick-start).total_seconds()/60
+        curPointX = (itick-zeroTick_t).total_seconds()/60
         curPointX_M = curPointX + ieventLast/2
         ax.scatter(curPointX_M, 0, s=100, facecolor='w',
                    edgecolor=barhColor, zorder=9999)
@@ -107,11 +94,13 @@ def UpdateTimeLineImage(startTick_x=['2021-08-09 09:00:00', '2021-08-09 09:45:00
               list(ax.spines.values())), visible=False)
     plt.setp((ax.get_xticklabels() + ax.get_xticklines() +
               list(ax.spines.values())), visible=False)
-    plt.xlabel(startTick_t[int(len(startTick_t)/2)].strftime("%Y-%m-%d"),
-               fontsize=40, fontfamily='Microsoft YaHei')
+    plt.xlabel(startTick_t[int(len(startTick_t)/2)].strftime("%Y-%m-%d")+' Time Line',
+               loc='left', fontsize=30, fontfamily='Microsoft YaHei', color='white')
+    plt.ylabel('Update:'+datetime.now().strftime("%Y-%m-%d"),
+               loc='bottom', fontsize=30, fontfamily='Microsoft YaHei', color='white')
     if True:
-        imageFile = r'../html/pic/timeline.png'
-        plt.savefig(imageFile, bbox_inches='tight')
+        imageFile = r'../html/pic/timeline.jpg'
+        plt.savefig(imageFile,dpi=400, bbox_inches='tight')
         print('image generated', imageFile)
         return imageFile
     else:

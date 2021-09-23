@@ -260,6 +260,21 @@ ax.set_axis_off()
 fig.show()
 
 #%% 
-from datetime import date,datetime
-a = datetime.combine((date.today()), datetime.min.time())
-print(a)
+from os import listdir,remove,path
+dataRelPath = './/..//data'
+remainData = ['FlightDeparture-test.xlsx','FlightArrival-test.xlsx',
+                'FlightDeparture-'+datetime.now().strftime('%Y-%m-%d')+'.xlsx',
+                'FlightArrival-'+datetime.now().strftime('%Y-%m-%d')+'.xlsx']
+a = listdir(dataRelPath)
+b = path.abspath(dataRelPath)
+for k in a:
+    if (not k in remainData) and ('Flight' in k):
+        remove(path.join(b, k))
+#%% 
+a = [1,2,3]
+b = [4,5,6]
+c = [7,8,9]
+if len(a)==0 or len(b)==0 or len(c)==0:
+    print('0')
+else:
+    print('1')
