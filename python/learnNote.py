@@ -278,3 +278,21 @@ if len(a)==0 or len(b)==0 or len(c)==0:
     print('0')
 else:
     print('1')
+    
+#%%
+import time 
+import pandas as pd
+
+filename='C:\\Users\\Administrator\\Documents\\abcd.xlsx'
+filename2='C:\\Users\\Administrator\\Documents\\abcd-副件.xlsx'
+#t1=time.time()
+sh=pd.ExcelFile(filename) #读入原表的最快方法
+sheets=sh.sheet_names  #确定sheets 表名列表
+#print(sheets)
+#print(time.time()-t1)
+target_excel=pd.ExcelWriter(filename2) #目标文件名
+for sht_name in sheets:
+    sh.parse(sht_name).to_excel(target_excel,sheet_name=sht_name,index=False)
+target_excel.save()
+#print(time.time()-t1)
+del sh,target_excel

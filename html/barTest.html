@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Bar 2021-09-23</title>
-    <meta name="viewport"
-        content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+    <title>Bar 2021-09-29</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
             <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
 
     <style type="text/css">
-        html,
-        body {
-            height: 98%;
-            width: 98%
-        }
-    </style>
+            html,body{
+                height:98%;
+                width:98%
+            }
+        </style>
 </head>
-
 <body onresize="resizeFresh()">
-    <div id="d463c92fb87b40c39088a7ebff47fc1d" class="chart-container" style="width:95%; height:95%; margin:auto; top:30px"></div>
+    <div id="929d29cd2bea42e290509f98fcfd13ca" class="chart-container" style="width:95%; height:95%; margin:auto; top:10px"></div>
     <script>
-        var chart_d463c92fb87b40c39088a7ebff47fc1d = echarts.init(
-            document.getElementById('d463c92fb87b40c39088a7ebff47fc1d'), 'white', {renderer: 'canvas'});
-        var option_d463c92fb87b40c39088a7ebff47fc1d = {
+        var chart_929d29cd2bea42e290509f98fcfd13ca = echarts.init(
+            document.getElementById('929d29cd2bea42e290509f98fcfd13ca'), 'white', {renderer: 'canvas'});
+        var option_929d29cd2bea42e290509f98fcfd13ca = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -63,15 +59,13 @@
             "name": "Daily Event",
             "legendHoverLink": true,
             "data": [
-                20,
-                29,
-                74,
-                8,
-                11,
-                37,
-                114,
-                36,
-                34
+                147,
+                144,
+                27,
+                96,
+                87,
+                112,
+                60
             ],
             "showBackground": false,
             "barMinHeight": 0,
@@ -163,15 +157,13 @@
                 }
             },
             "data": [
-                "note\n07-45",
-                "TimeVisual-Code\n08-51",
-                "TimeVisual-Code\n09-31",
-                "TimeVisual-Code\n10-56",
-                "TimeVisual-Code\n11-31",
-                "TimeVisual-Code\n14-21",
-                "\u5f00\u4f1a\n14-59",
-                "TimeVisual-Code\n17-00",
-                "TimeVisual-Code\n17-57"
+                "\u5468\u4e00",
+                "\u5468\u4e8c",
+                "\u5468\u4e09",
+                "\u5468\u56db",
+                "\u5468\u4e94",
+                "\u5468\u516d",
+                "\u5468\u65e5"
             ]
         }
     ],
@@ -206,15 +198,22 @@
     ],
     "title": [
         {
-            "text": "2021-09-23",
-            "subtext": "Update:2021-09-23",
+            "text": "Test Data",
+            "subtext": "Update:2021-09-29",
             "padding": 5,
             "itemGap": 10
         }
     ]
 };
-        chart_d463c92fb87b40c39088a7ebff47fc1d.setOption(option_d463c92fb87b40c39088a7ebff47fc1d);
+        chart_929d29cd2bea42e290509f98fcfd13ca.setOption(option_929d29cd2bea42e290509f98fcfd13ca);
     </script>
+	<script>   
+		//窗口大小变化时候，进行刷新页面操作，防止样式混乱
+        var x=window.innerWidth;
+		function resizeFresh(){
+         if(x!=window.innerWidth)
+             location.reload();
+     }
+	</script>
 </body>
-
 </html>

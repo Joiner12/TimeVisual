@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Line 2021-09-23</title>
-    <meta name="viewport"
-        content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+    <title>Line 2021-09-29</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
             <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
 
     <style type="text/css">
-        html,
-        body {
-            height: 98%;
-            width: 98%
-        }
-    </style>
+            html,body{
+                height:98%;
+                width:98%
+            }
+        </style>
 </head>
-
 <body onresize="resizeFresh()">
-    <div id="cb6f039cf7c44f89a4a6c9ddc1d82b37" class="chart-container" style="width:95%; height:95%; margin:auto; top:30px"></div>
+    <div id="b0e02298c6784cb9886ca816a5f855f5" class="chart-container" style="width:95%; height:95%; margin:auto; top:10px"></div>
     <script>
-        var chart_cb6f039cf7c44f89a4a6c9ddc1d82b37 = echarts.init(
-            document.getElementById('cb6f039cf7c44f89a4a6c9ddc1d82b37'), 'white', {renderer: 'canvas'});
-        var option_cb6f039cf7c44f89a4a6c9ddc1d82b37 = {
+        var chart_b0e02298c6784cb9886ca816a5f855f5 = echarts.init(
+            document.getElementById('b0e02298c6784cb9886ca816a5f855f5'), 'white', {renderer: 'canvas'});
+        var option_b0e02298c6784cb9886ca816a5f855f5 = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -70,40 +66,32 @@
             "step": false,
             "data": [
                 [
-                    "note\n07-45",
-                    20
+                    "\u5c0f\u7c73",
+                    127
                 ],
                 [
-                    "TimeVisual-Code\n08-51",
-                    29
+                    "\u4e09\u661f",
+                    131
                 ],
                 [
-                    "TimeVisual-Code\n09-31",
+                    "\u534e\u4e3a",
+                    84
+                ],
+                [
+                    "\u82f9\u679c",
+                    150
+                ],
+                [
+                    "\u9b45\u65cf",
+                    27
+                ],
+                [
+                    "VIVO",
+                    83
+                ],
+                [
+                    "OPPO",
                     74
-                ],
-                [
-                    "TimeVisual-Code\n10-56",
-                    8
-                ],
-                [
-                    "TimeVisual-Code\n11-31",
-                    11
-                ],
-                [
-                    "TimeVisual-Code\n14-21",
-                    37
-                ],
-                [
-                    "\u5f00\u4f1a\n14-59",
-                    114
-                ],
-                [
-                    "TimeVisual-Code\n17-00",
-                    36
-                ],
-                [
-                    "TimeVisual-Code\n17-57",
-                    34
                 ]
             ],
             "hoverAnimation": true,
@@ -233,15 +221,13 @@
                 }
             },
             "data": [
-                "note\n07-45",
-                "TimeVisual-Code\n08-51",
-                "TimeVisual-Code\n09-31",
-                "TimeVisual-Code\n10-56",
-                "TimeVisual-Code\n11-31",
-                "TimeVisual-Code\n14-21",
-                "\u5f00\u4f1a\n14-59",
-                "TimeVisual-Code\n17-00",
-                "TimeVisual-Code\n17-57"
+                "\u5c0f\u7c73",
+                "\u4e09\u661f",
+                "\u534e\u4e3a",
+                "\u82f9\u679c",
+                "\u9b45\u65cf",
+                "VIVO",
+                "OPPO"
             ]
         }
     ],
@@ -306,15 +292,22 @@
     ],
     "title": [
         {
-            "text": "2021-09-23",
-            "subtext": "Update:2021-09-23",
+            "text": "Test Data",
+            "subtext": "Update:2021-09-29",
             "padding": 5,
             "itemGap": 10
         }
     ]
 };
-        chart_cb6f039cf7c44f89a4a6c9ddc1d82b37.setOption(option_cb6f039cf7c44f89a4a6c9ddc1d82b37);
+        chart_b0e02298c6784cb9886ca816a5f855f5.setOption(option_b0e02298c6784cb9886ca816a5f855f5);
     </script>
+	<script>   
+		//窗口大小变化时候，进行刷新页面操作，防止样式混乱
+        var x=window.innerWidth;
+		function resizeFresh(){
+         if(x!=window.innerWidth)
+             location.reload();
+     }
+	</script>
 </body>
-
 </html>
