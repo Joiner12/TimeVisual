@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 from datetime import date, datetime
 import re
 import os
+import dominate
+from dominate.tags import *
 
 
 class RefNews():
@@ -19,6 +21,7 @@ class RefNews():
     filePath = ''
     htmlFile = ''
     pageDate = ''
+    pictures = list()
 
     def __init__(self, *pk, **pkw):
         super().__init__()
@@ -40,6 +43,7 @@ class RefNews():
             todayRnsLink[0], todayRnsLink[1])
         if not validSubUrls is None:
             self._DownLoadPagePicture(validSubUrls)
+            self._WriteHtml()
 
     def _GetPaperLink(self, *pk, **pkw):
         newspaper = dict()
@@ -112,13 +116,28 @@ class RefNews():
                 f.write(r.content)
                 f.close()
             i = urls.index(url)
+            self.pictures.append(curPic)
             print('\rLoading：{0}{1}%'.format(
                 '▉'*(i+1), ((i+1)*100/len(urls))), end='')
 
     def _WriteHtml(self, *pw, **pkw):
         self.htmlFile = os.path.join(
             self.picDir, 'ReferenceNews'+self.pageDate+'.html')
-        print(self.htmlFile)
+        doc = dominate.document(title='参考消息')
+        doc.body['style'] = """background-color:white;text-align:center;"""
+
+        with doc.head:
+            link(rel='stylesheet', href='style.css')
+            script(type='text/javascript', src='script.js')
+        with doc:
+            div(id='title').add(
+                img(src="https://gitee.com/RiskyJR/pic-bed/raw/master/20211012101706.png"))
+        with doc:
+            for i in self.pictures:
+                with div(id="content", style="text-align:center;"):
+                    img(src=i)
+        with open(self.htmlFile, 'w') as f:
+            f.write(doc.render())
 
 
 if __name__ == "__main__":
