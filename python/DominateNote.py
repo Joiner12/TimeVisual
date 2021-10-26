@@ -84,3 +84,8 @@ ques = re.findall(question, orgqus1, re.S)
 ques1 = re.findall(question1, orgqus2, re.S)
 ques2 = re.findall(question2, res, re.S)
 print(ques2)
+
+#%% 
+import dominate
+from dominate.tags import * 
+print(html(body(h1('Hello, World!'))))
