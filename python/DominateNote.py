@@ -9,6 +9,9 @@ Created on Wed Oct 13 18:04:22 2021
 
 # baseHtml = html(body(h1('Hello, World!')))
 # print(baseHtml)
+from dominate.util import text
+from dominate.tags import *
+import dominate
 import requests
 import re
 # %%
@@ -59,7 +62,7 @@ ques = re.findall(question, res, re.S)
 ques1 = re.findall(question1, res, re.S)
 ques2 = re.findall(question2, res, re.S)
 rep = re.findall(reply, res, re.S)
-#%% 
+# %%
 for i in range(len(ques)):
     ques[i] = ques[i].strip()
 for j in range(len(ques1)):
@@ -85,7 +88,115 @@ ques1 = re.findall(question1, orgqus2, re.S)
 ques2 = re.findall(question2, res, re.S)
 print(ques2)
 
-#%% 
-import dominate
-from dominate.tags import * 
+# %%
 print(html(body(h1('Hello, World!'))))
+bd = body()
+for item in range(4):
+    bd += div('Item #', item)
+print(bd)
+menu_items = (['home', r'/home/'], ['about', '/about'])
+print(ul(li(a(name, href=link), __pretty=False) for name, link in menu_items))
+_html = html()
+_head = _html.add(head(title("Simple Document Tree")))
+_body = _html.add(body())
+header = _body.add(div(id='header'))
+content = _body.add(div(id='content'))
+footer = _body.add(div(id='footer'))
+print(_html)
+
+_html = html()
+_head, _body = _html.add(head(title('Simple Document Tree')), body())
+names = ['header', 'content', 'footer']
+header, content, footer = _body.add([div(id=name) for name in names])
+# print(_html)
+# %%
+header = div('Test')
+print(header)
+header[0] = 'Hello World'
+print(header)
+print(comment('this is a piece of commit'))
+print(comment(p('Upgrade to newer IE!'), condition='lt IE9'))
+
+# %%
+print(r'--------------')
+a = div(span('Hello World'))
+print(a.render())
+print(r'--------------')
+print(a.render(pretty=False))
+print(r'--------------')
+print(a.render(indent='\t'))
+print(r'--------------')
+a = div(span('Hello World'), __pretty=False)
+print(a.render())
+d = div()
+with d:
+    hr()
+    p("Test")
+    br()
+print(r'--------------')
+print(d.render())
+print(r'--------------')
+print(d.render(xhtml=True))
+
+# %%
+a = div(span('Hello World'))
+print(a.render(), '\n', type(a.render()))
+with open('test.html', mode='w', encoding='utf-8') as f:
+    f.write(a.render())
+# %%
+a = [200.00, 53.00, 59.75, 55.56, 42.06, 51.73,
+     54.78, 68.58, 128.00, 210.00, 150.00]
+print(sum(a))
+
+# %%
+# 创建一个无序列表标签
+h = ul()
+# 使用with给无序列表添加列表项目
+with h:
+    li('One')
+    li('Two')
+    li('Three')
+
+print(h)
+# %%
+h = html()
+with h.add(body()).add(div(id='content')):
+    h1('Hello World!')
+    p('Lorem ipsum ...')
+    with table().add(tbody()):
+        l = tr()
+        l += td('One')
+        l.add(td('Two'))
+        with l:
+            td('Three')
+
+print(h)
+# %%
+para = p("This is a paragraph,", __pretty=False)
+print(para)
+with para:
+    text('Have a look at our ')
+    a('other products', href='/products')
+
+print(para)
+#%% 
+def greeting(name):
+    with div() as d:
+        p('Hello, %s' % name)
+    return d
+D1 = greeting('Bob')
+with D1:
+    h1('DEL')
+print(greeting('Bob'))
+print(D1)
+#%% 
+@div
+def greeting(name):
+    p('Hello %s' % name)
+print(greeting('Bob'))
+#%% 
+@div(h2('Welcome'), cls='greeting')
+def greeting(name):
+    p('Hello %s' % name)
+
+print(greeting('Bob'))
