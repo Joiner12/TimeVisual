@@ -200,3 +200,31 @@ def greeting(name):
     p('Hello %s' % name)
 
 print(greeting('Bob'))
+#%% 
+"""
+天气预报温度和体感温度
+reference:https://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml
+"""
+import math
+# NOAA体感温度计算简化公式,T:(天气预报温度)1.5米高处的气温(摄氏度)，RH:相对湿度(0~100或者0~1)
+def calc_heat_index(T, RH):
+    if RH < 1:
+        RH *= 100
+    T = 1.8 * T + 32
+    HI = 0.5 * (T + 61 + (T - 68) * 1.2 + RH * 0.094)
+    if HI >= 80:  # 如果不小于 80华氏度 则用完整公式重新计算
+        HI = -42.379 + 2.04901523 * T + 10.14333127 * RH - .22475541 * T * RH \
+             - .00683783 * T * T - .05481717 * RH * RH + .00122874 * T * T * RH \
+             + .00085282 * T * RH * RH - .00000199 * T * T * RH * RH
+        if RH < 13 and 80 < T < 112:
+            ADJUSTMENT = (13 - RH) / 4 * math.sqrt((17 - abs(T - 95)) / 17)
+            HI -= ADJUSTMENT
+        elif RH > 85 and 80 < T < 87:
+            ADJUSTMENT = (RH - 85) * (87 - T) / 50
+            HI += ADJUSTMENT
+    return round((HI - 32) / 1.8, 2)
+# 
+T = 10
+RH = 0.75
+heat_index = calc_heat_index(T,RH)
+print('天气预报温度:%0.2f,相对湿度:%0.2f\n体感温度:%0.2f'%(T,RH,heat_index))
