@@ -71,6 +71,21 @@ class GithubHost():
             # fw.write(os.linesep)
             fw.write(requests.get(hostsurl).text.strip())
 
+    def update_manual(self, hostsurl=r'https://raw.hellogithub.com/hosts'):
+        '''从githubhost 获取ip→输出到对话框→手动更新数据(文件权限问题)
+        -----
+        参数
+        hostsurl:str
+            服务器地址
+        -----
+        输出
+            None
+        '''
+
+        ips = requests.get(hostsurl).text.strip()
+        print(ips)
+        os.startfile(r'C:\Windows\System32\drivers\etc')  # 打开文件夹窗口
+
 
 if __name__ == "__main__":
-    GithubHost().refreshHosts()
+    GithubHost().update_manual()
