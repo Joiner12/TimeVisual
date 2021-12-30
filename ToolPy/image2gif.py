@@ -19,11 +19,13 @@ def create_gif(image_list, gif_name):
 
 def main_1():
     image_list = list()
-    for k in range(1,8,1):
-        image_temp = r'../pic/erase/erase'+('%02d')%(k)+'.png'
+    for k in range(1,10,1):
+        # D:/Code/TimeVisual/ToolPy/pic/image007.jpg
+        #D:/Code/TimeVisual/ToolPy/GrapPdf.py
+        image_temp = r'pic/image'+('%03d')%(k)+'.png'
         image_list.append(image_temp)
         print(image_temp)
-    gif_name = '../pic/erase/erase.gif'
+    gif_name = 'pic/write.gif'
     create_gif(image_list, gif_name)
  
 if __name__ == "__main__":
