@@ -18,7 +18,27 @@ import time
 
 
 def testWebdriver():
-    print('check for to do list')
+    #      _               _       __              _              _         _ _     _
+    #  ___| |__   ___  ___| | __  / _| ___  _ __  | |_ ___     __| | ___   | (_)___| |_
+    # / __| '_ \ / _ \/ __| |/ / | |_ / _ \| '__| | __/ _ \   / _` |/ _ \  | | / __| __|
+    #| (__| | | |  __/ (__|   <  |  _| (_) | |    | || (_) | | (_| | (_) | | | \__ \ |_
+    # \___|_| |_|\___|\___|_|\_\ |_|  \___/|_|     \__\___/   \__,_|\___/  |_|_|___/\__|
+
+    print(
+        r"      _               _       __              _              _         _ _     _   "
+    )
+    print(
+        r"  ___| |__   ___  ___| | __  / _| ___  _ __  | |_ ___     __| | ___   | (_)___| |_"
+    )
+    print(
+        r" / __| '_ \ / _ \/ __| |/ / | |_ / _ \| '__| | __/ _ \   / _` |/ _ \  | | / __| __|"
+    )
+    print(
+        r"| (__| | | |  __/ (__|   <  |  _| (_) | |    | || (_) | | (_| | (_) | | | \__ \ |_"
+    )
+    print(
+        r" \___|_| |_|\___|\___|_|\_\ |_|  \___/|_|     \__\___/   \__,_|\___/  |_|_|___/\__|"
+    )
     """
     embeded function
     """
@@ -28,12 +48,30 @@ def testWebdriver():
             expected_conditions.presence_of_all_elements_located(locator))
 
     TargetBaseUrl = r'http://172.18.0.28:8080/cas/login?service=http://172.18.0.29/cas#/portal/index'
-    chromeOptions = Options()
-    chromeOptions.add_argument('headless')
-    browser = webdriver.Chrome(
-        executable_path=r"D:\Code\TimeVisual\python\chromedriver.exe",
-        options=chromeOptions)
+    browserOptions = Options()
+    browserOptions.add_argument('headless')
+    # chrome
+    # browser = webdriver.Chrome(executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+    #                            options=browserOptions)
+    # edge
+    EDGE = {
+        "browserName": "MicrosoftEdge",
+        "version": "",
+        "platform": "WINDOWS",
 
+        # 关键是下面这个
+        "ms:edgeOptions": {
+            'extensions': [],
+            'args': [
+                '--headless'
+                # '--disable-gpu',
+                # '--remote-debugging-port=9222',
+            ]
+        }
+    }
+    browser = webdriver.Edge(
+        executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+        capabilities=EDGE)
     # browser.set_window_size(200, 200)
     browser.get(TargetBaseUrl)
     # login status
@@ -52,7 +90,12 @@ def testWebdriver():
             browser = click_upcoming_item(browser)
         except:
             break
-    print('empty to do list')
+    print(r"                       _         ")
+    print(r"   ___ _ __ ___  _ __ | |_ _   _ ")
+    print(r"  / _ \ '_ ` _ \| '_ \| __| | | |")
+    print(r" |  __/ | | | | | |_) | |_| |_| |")
+    print(r"  \___|_| |_| |_| .__/ \__|\__, |")
+    print(r"                |_|        |___/ ")
     browser.quit()
 
 
