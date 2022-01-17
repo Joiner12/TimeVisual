@@ -9,7 +9,7 @@ Created on Wed Nov  3 17:23:50 2021
 """
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
@@ -48,8 +48,8 @@ def testWebdriver():
             expected_conditions.presence_of_all_elements_located(locator))
 
     TargetBaseUrl = r'http://172.18.0.28:8080/cas/login?service=http://172.18.0.29/cas#/portal/index'
-    browserOptions = Options()
-    browserOptions.add_argument('headless')
+    # browserOptions = Options()
+    # browserOptions.add_argument('headless')
     # chrome
     # browser = webdriver.Chrome(executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
     #                            options=browserOptions)
