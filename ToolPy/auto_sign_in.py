@@ -5,13 +5,15 @@ Created on Mon Jan 17 08:43:05 2022
 @author: W-H
 """
 
+import random
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from datetime import datetime
-from random import randint
+from random import randint, random
 import re
+import time
 
 
 def log_in_main_page():
@@ -63,9 +65,6 @@ def log_in_main_page():
         r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a').click()
     #
     wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
-    # 签到信息
-    continue_days = 'NaN'
-    got_bits = 'NaN'
 
     # 签到
     # /html/body/div[5]/div[2]/div[1]/div[1]/a
@@ -89,14 +88,15 @@ def log_in_main_page():
         browser.find_element_by_xpath(
             r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/button'
         ).click()
-        # 签到完成后需要刷新页面
-        #
-        wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
-        browser.find_element_by_xpath(
-            r'/html/body/div[5]/div[1]/div/a[2]').click()
     else:
         print('今日已签到,无需重复签到!')
-    #
+    # 刷新签到页面
+    # 签到信息
+    continue_days = 'NaN'
+    got_bits = 'NaN'
+    time.sleep(2 + random())
+    wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
+    browser.find_element_by_xpath(r'/html/body/div[5]/div[1]/div/a[2]').click()
     continue_days = browser.find_element_by_xpath(
         r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[1]/span[1]').text
     got_bits = browser.find_element_by_xpath(
