@@ -54,6 +54,7 @@ def log_in_main_page():
             capabilities=EDGE)
     elif sys.platform == 'linux':
         browserOptions = Options()
+        browserOptions.add_argument('bina')
         browserOptions.add_argument('headless')
         browser = webdriver.Chrome(executable_path=r"chromdriver.exe",
                                    options=browserOptions)
