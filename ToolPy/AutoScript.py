@@ -81,7 +81,7 @@ def testWebdriver():
     browser.find_element_by_id("username").clear()
     browser.find_element_by_id("username").send_keys('wuhao3')
     browser.find_element_by_id("password").clear()
-    browser.find_element_by_id("password").send_keys('chinamobile1_1')
+    browser.find_element_by_id("password").send_keys('chinamobile_1')
     browser.find_element_by_id(longInButtonId).click()
     # for k in range(10):
     #     browser = click_upcoming_item(browser)
@@ -146,5 +146,4 @@ def click_upcoming_item(browser, *args, **kwargs):
 
 
 if __name__ == "__main__":
-    # for k in range(0, 20):
     testWebdriver()

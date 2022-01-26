@@ -7,6 +7,7 @@ Created on Mon Jan 17 08:43:05 2022
 
 import random
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
@@ -14,6 +15,7 @@ from datetime import datetime
 from random import randint, random
 import re
 import time
+import sys
 
 
 def log_in_main_page():
@@ -34,19 +36,30 @@ def log_in_main_page():
             expected_conditions.presence_of_all_elements_located(locator))
 
     TargetBaseUrl = r'https://www.chongbuluo.com/'
+    # win平台使用edge,Linux平台使用chrome
     # edge
-    EDGE = {
-        "browserName": "MicrosoftEdge",
-        "version": "",
-        "platform": "WINDOWS",
-        "ms:edgeOptions": {
-            'extensions': [],
-            # 'args': ['--headless']
+    if sys.platform == 'win32':
+        EDGE = {
+            "browserName": "MicrosoftEdge",
+            "version": "",
+            "platform": "WINDOWS",
+            "ms:edgeOptions": {
+                'extensions': [],
+                'args': ['--headless']
+            }
         }
-    }
-    browser = webdriver.Edge(
-        executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
-        capabilities=EDGE)
+        browser = webdriver.Edge(
+            executable_path=
+            r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+            capabilities=EDGE)
+    elif sys.platform == 'linux':
+        browserOptions = Options()
+        browserOptions.add_argument('headless')
+        browser = webdriver.Chrome(executable_path=r"chromdriver.exe",
+                                   options=browserOptions)
+    else:
+        pass
+
     # browser.set_window_size(200, 200)
     browser.get(TargetBaseUrl)
     # log in
