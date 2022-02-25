@@ -14,8 +14,8 @@ class Logger:
     Logger = None
 
     def __init__(self,
-                 logging_service="chongbuluo_log",
-                 enable_notifications=True):
+                 logging_service="chongbuluo",
+                 enable_notifications=False):
         # Logger setup
         self.Logger = logging.getLogger(f"{logging_service}_logger")
         self.Logger.setLevel(logging.DEBUG)
@@ -28,11 +28,12 @@ class Logger:
         fh.setFormatter(formatter)
         self.Logger.addHandler(fh)
 
-        # logging to console
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.INFO)
-        ch.setFormatter(formatter)
-        self.Logger.addHandler(ch)
+        if enable_notifications:
+            # logging to console
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.INFO)
+            ch.setFormatter(formatter)
+            self.Logger.addHandler(ch)
 
     def log(self, message, level="info", notification=True):
 

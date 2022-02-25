@@ -16,6 +16,11 @@ from random import randint, random
 import re
 import time
 import sys
+from logger import Logger
+import os
+# workspace
+cmd = '''cd D:\Code\TimeVisual\ToolPy '''
+os.system(cmd)
 
 
 def log_in_main_page():
@@ -35,101 +40,137 @@ def log_in_main_page():
         WebDriverWait(browser, timeout).until(
             expected_conditions.presence_of_all_elements_located(locator))
 
+    chongbuluo_log = Logger()
     TargetBaseUrl = r'https://www.chongbuluo.com/'
-    # win平台使用edge,Linux平台使用chrome
-    # edge
-    if sys.platform == 'win32':
-        EDGE = {
-            "browserName": "MicrosoftEdge",
-            "version": "",
-            "platform": "WINDOWS",
-            "ms:edgeOptions": {
-                'extensions': [],
-                'args': ['--headless']
+    chongbuluo_log.log('开始自动签到，完成配置', level='info')
+    try:
+        # win平台使用edge,Linux平台使用chrome
+        # edge
+        if sys.platform == 'win32':
+            EDGE = {
+                "browserName": "MicrosoftEdge",
+                "version": "",
+                "platform": "WINDOWS",
+                "ms:edgeOptions": {
+                    'extensions': [],
+                    'args': ['--headless']
+                }
             }
-        }
-        browser = webdriver.Edge(
-            executable_path=
-            r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
-            capabilities=EDGE)
-    elif sys.platform == 'linux':
-        browserOptions = Options()
-        browserOptions.add_argument('bina')
-        browserOptions.add_argument('headless')
-        browser = webdriver.Chrome(executable_path=r"chromdriver.exe",
-                                   options=browserOptions)
-    else:
-        pass
-
-    # browser.set_window_size(200, 200)
-    browser.get(TargetBaseUrl)
-    # log in
-    browser.find_element_by_css_selector(r'#welcome > a:nth-child(1)').click()
-    # 等待加载
-    wait((By.XPATH, r'//*[@id="main_message"]/div/div[1]/h3'))
-    browser.find_element_by_name("username").clear()
-    browser.find_element_by_name("username").send_keys('Risky_JR')
-    browser.find_element_by_name("password").clear()
-    browser.find_element_by_name("password").send_keys('Risky11#')
-    browser.find_element_by_name('loginsubmit').click()
-    # 签到页面
-    wait((By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a'),
-         timeout=10)
-    browser.find_element_by_xpath(
-        r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a').click()
-    #
-    wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
-
-    # 签到
-    # /html/body/div[5]/div[2]/div[1]/div[1]/a
-    sign_in_text = browser.find_element_by_xpath(
-        r'/html/body/div[5]/div[2]/div[1]/div[1]/a').text
-    if not '已签到' in sign_in_text:
-        browser.find_element_by_xpath(
-            r'/html/body/div[5]/div[2]/div[1]/div[1]/a').click()
-        wait((
-            By.XPATH,
-            r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/p/textarea'
-        ),
-             timeout=10)
-        if False:
-            filling_words = datetime.now().strftime('%Y-%m-%d')
+            browser = webdriver.Edge(
+                executable_path=
+                r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+                capabilities=EDGE)
+        elif sys.platform == 'linux':
+            browserOptions = Options()
+            browserOptions.add_argument('bina')
+            browserOptions.add_argument('headless')
+            browser = webdriver.Chrome(executable_path=r"chromdriver.exe",
+                                       options=browserOptions)
         else:
-            filling_words = piece_lrc()
-        browser.find_element_by_xpath(
-            r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/p/textarea'
-        ).send_keys(filling_words)
-        browser.find_element_by_xpath(
-            r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/button'
-        ).click()
-    else:
-        print('今日已签到,无需重复签到!')
-    # 刷新签到页面
-    # 签到信息
-    continue_days = 'NaN'
-    got_bits = 'NaN'
-    time.sleep(2 + random())
-    wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
-    browser.find_element_by_xpath(r'/html/body/div[5]/div[1]/div/a[2]').click()
-    continue_days = browser.find_element_by_xpath(
-        r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[1]/span[1]').text
-    got_bits = browser.find_element_by_xpath(
-        r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[2]/span').text
-    got_bits = re.sub(r'Bit', '', got_bits)
-    text_temp = "\t连续签到:%5s天 \t 累计获得:%4s Bit" % (continue_days, got_bits)
-    print('—' * 59 + '\n', text_temp.center(40, chr(12288)), '—' * 59)
-    browser.quit()
+            pass
+    except:
+        chongbuluo_log.log('chrome 句柄初始化失败', level='error')
+        return
+    # browser.set_window_size(200, 200)
+    try:
+        browser.get(TargetBaseUrl)
+        # log in
+        browser.find_element(By.CSS_SELECTOR,
+                             '#welcome > a:nth-child(1)').click()
+        # 等待加载
+        wait((By.XPATH, r'//*[@id="main_message"]/div/div[1]/h3'))
+        browser.find_element(By.NAME, "username").clear()
+        browser.find_element(By.NAME, "username").send_keys('Risky_JR')
+        browser.find_element(By.NAME, "password").clear()
+        browser.find_element(By.NAME, "password").send_keys('Risky11#')
+        browser.find_element(By.NAME, 'loginsubmit').click()
+    except:
+        chongbuluo_log.log('输入账号密码失败', level='error')
+        return
+    # 签到页面
+    try:
+        wait((By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a'),
+             timeout=10)
+        browser.find_element(
+            By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a').click()
+        #
+        wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
+    except:
+        chongbuluo_log.log('签到元素加载失败', level='error')
+        return
+    try:
+        # 签到
+        # /html/body/div[5]/div[2]/div[1]/div[1]/a
+        chongbuluo_log.log('点击签到', level='info')
+        sign_in_text = browser.find_element(
+            By.XPATH, r'/html/body/div[5]/div[2]/div[1]/div[1]/a').text
+        if not '已签到' in sign_in_text:
+            browser.find_element(
+                By.XPATH, r'/html/body/div[5]/div[2]/div[1]/div[1]/a').click()
+            wait((
+                By.XPATH,
+                r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/p/textarea'
+            ),
+                 timeout=10)
+            if False:
+                filling_words = datetime.now().strftime('%Y-%m-%d')
+            else:
+                filling_words = piece_lrc(lrc_file=r'./lrc/selfpart.txt')
+            chongbuluo_log.log(filling_words, level='info')
+            browser.find_element(
+                By.XPATH,
+                r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/p/textarea'
+            ).send_keys(filling_words)
+            browser.find_element(
+                By.XPATH,
+                r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/button'
+            ).click()
+        else:
+            # print('今日已签到,无需重复签到!')
+            chongbuluo_log.log('今日已签到,无需重复签到!', level='info')
+    except:
+        chongbuluo_log.log('签到失败', level='error')
+        return
+
+    try:
+        # 刷新签到页面
+        # 签到信息
+        continue_days = 'NaN'
+        got_bits = 'NaN'
+        time.sleep(2 + random())
+        wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
+        browser.find_element(By.XPATH,
+                             r'/html/body/div[5]/div[1]/div/a[2]').click()
+        continue_days = browser.find_element(
+            By.XPATH,
+            r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[1]/span[1]').text
+        got_bits = browser.find_element(
+            By.XPATH,
+            r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[2]/span').text
+        got_bits = re.sub(r'Bit', '', got_bits)
+        text_temp = "\t连续签到:%5s天 \t 累计获得:%4s Bit" % (continue_days, got_bits)
+        chongbuluo_log.log('自动签到成功' + '\n' + text_temp.center(40, chr(12288)) +
+                           '—' * 5 + '\n',
+                           level='info')
+        browser.quit()
+    except:
+        chongbuluo_log.log('获取签到信息失败', level='error')
+        return
 
 
-def piece_lrc():
+def piece_lrc(lrc_file=r'./lrc/eason.txt'):
     ret_lrc = ""
-    with open(r'./lrc/eason.txt', encoding='utf-8', mode='r') as f:
-        all_lines = f.readlines()
-        line_cnt = len(all_lines)
-        ret_lrc = all_lines[randint(0, line_cnt - 1)]
-    ret_lrc = re.sub(r'\[\d{1,}\]:', '', ret_lrc)
+    try:
+        with open(lrc_file, encoding='utf-8', mode='r') as f:
+            all_lines = f.readlines()
+            line_cnt = len(all_lines)
+            ret_lrc = all_lines[randint(0, line_cnt - 1)]
+            ret_lrc = re.sub(r'\[\d{1,}\]:', '', ret_lrc)
+    except:
+        ret_lrc = '感谢你特别邀请 来见证你的爱情'
     return ret_lrc
 
 
 if __name__ == "__main__":
     log_in_main_page()
+    # print(piece_lrc(lrc_file=r'./lrc/selfpart.txt'))
