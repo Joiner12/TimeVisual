@@ -109,7 +109,7 @@ def log_in_main_page():
             if False:
                 filling_words = datetime.now().strftime('%Y-%m-%d')
             else:
-                filling_words = piece_lrc(lrc_file=r'./lrc/selfpart.txt')
+                filling_words = piece_lrc()
             chongbuluo_log.log(filling_words, level='info')
             browser.find_element(
                 By.XPATH,
