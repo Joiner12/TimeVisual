@@ -24,14 +24,6 @@ os.system(cmd)
 
 
 def log_in_main_page():
-    print(r" __________________________________________________________")
-    print(r"|   ____ _                       _           _             |")
-    print(r"|  / ___| |__   ___  _ __   __ _| |__  _   _| |_   _  ___  |")
-    print(r"| | |   | '_ \ / _ \| '_ \ / _` | '_ \| | | | | | | |/ _ \ |")
-    print(r"| | |___| | | | (_) | | | | (_| | |_) | |_| | | |_| | (_) ||")
-    print(r"|  \____|_| |_|\___/|_| |_|\__, |_.__/ \__,_|_|\__,_|\___/ |")
-    print(r"|                          |___/                           |")
-    print(r"|__________________________________________________________|")
     """
     embeded function
     """
@@ -80,9 +72,11 @@ def log_in_main_page():
         # 等待加载
         wait((By.XPATH, r'//*[@id="main_message"]/div/div[1]/h3'))
         browser.find_element(By.NAME, "username").clear()
-        browser.find_element(By.NAME, "username").send_keys('Risky_JR')
+        browser.find_element(By.NAME,
+                             "username").send_keys(os.getenv('CBL_USERNAME'))
         browser.find_element(By.NAME, "password").clear()
-        browser.find_element(By.NAME, "password").send_keys('Risky11#')
+        browser.find_element(By.NAME,
+                             "password").send_keys(os.getenv('CBL_PASSWORD'))
         browser.find_element(By.NAME, 'loginsubmit').click()
     except:
         chongbuluo_log.log('输入账号密码失败', level='error')

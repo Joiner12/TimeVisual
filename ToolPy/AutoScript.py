@@ -17,9 +17,9 @@ from numpy import random
 import time
 import requests
 from logger import Logger
-
+import os
 # 日志文件
-lg = Logger(logging_service='todolist')
+lg = Logger(logging_service='oa')
 
 
 def testWebdriver():
@@ -67,9 +67,9 @@ def testWebdriver():
     wait((By.ID, longInButtonId))
     browser.find_element(By.ID, longInButtonId)
     browser.find_element(By.ID, "username").clear()
-    browser.find_element(By.ID, "username").send_keys('wuhao3')
+    browser.find_element(By.ID, "username").send_keys(os.getenv('OA_USERNAME'))
     browser.find_element(By.ID, "password").clear()
-    browser.find_element(By.ID, "password").send_keys('chinamobile_1')
+    browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
     browser.find_element(By.ID, longInButtonId).click()
     # for k in range(10):
     #     browser = click_upcoming_item(browser)
@@ -78,6 +78,7 @@ def testWebdriver():
             browser = click_upcoming_item(browser)
         except:
             break
+    lg.info("empty to do list", "info")
     browser.quit()
 
 
@@ -109,8 +110,8 @@ def click_upcoming_item(browser, *args, **kwargs):
     elementUpcoming = browser.find_element_by_xpath(
         r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[2]/div[2]/div[2]/div/ul/li[1]/a'
     )
-    print(elementUpcoming.text)
-    # lg.info("\r\n" + elementUpcoming.text)
+    # print(elementUpcoming.text)
+    lg.info("\r\n" + elementUpcoming.text)
     browser.execute_script("arguments[0].click();", elementUpcoming)
     time.sleep(3 + random.rand())
     all_h = browser.window_handles
