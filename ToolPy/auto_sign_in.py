@@ -16,6 +16,7 @@ from random import randint, random
 import re
 import time
 import sys
+from ChinaMobileNet import CMCC_LOGIN
 from logger import Logger
 import os
 # workspace
@@ -35,6 +36,12 @@ def log_in_main_page():
     chongbuluo_log = Logger()
     TargetBaseUrl = r'https://www.chongbuluo.com/'
     chongbuluo_log.log('开始自动签到，完成配置', level='info')
+    cmcc_net = CMCC_LOGIN()
+    if not cmcc_net['status']:
+        chongbuluo_log.log(cmcc_net['detail'], level='error')
+        return
+    else:
+        chongbuluo_log.log(cmcc_net['detail'], level='info')
     try:
         # win平台使用edge,Linux平台使用chrome
         # edge
