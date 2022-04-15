@@ -51,7 +51,7 @@ def testWebdriver():
         "ms:edgeOptions": {
             'extensions': [],
             'args': [
-                '--headless'
+                # '--headless'
                 # '--disable-gpu',
                 # '--remote-debugging-port=9222',
             ]
@@ -105,12 +105,12 @@ def click_upcoming_item(browser, *args, **kwargs):
     browser.execute_script("window.scrollBy(0,3000)")
     wait((
         By.XPATH,
-        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[2]/div[2]/div[2]/div/ul/li[1]/a'
+        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[2]/ul/li[1]/div[1]/span[2]'
     ))
     elementUpcoming = browser.find_element_by_xpath(
-        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[2]/div[2]/div[2]/div/ul/li[1]/a'
+        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[2]/ul/li[1]/div[1]/span[2]'
     )
-    # print(elementUpcoming.text)
+    print(elementUpcoming.text)
     lg.info("\r\n" + elementUpcoming.text)
     browser.execute_script("arguments[0].click();", elementUpcoming)
     time.sleep(3 + random.rand())
