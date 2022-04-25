@@ -51,7 +51,7 @@ def testWebdriver():
         "ms:edgeOptions": {
             'extensions': [],
             'args': [
-                # '--headless'
+                '--headless'
                 # '--disable-gpu',
                 # '--remote-debugging-port=9222',
             ]
