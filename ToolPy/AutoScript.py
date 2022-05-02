@@ -69,7 +69,8 @@ def testWebdriver():
     browser.find_element(By.ID, "username").clear()
     browser.find_element(By.ID, "username").send_keys(os.getenv('OA_USERNAME'))
     browser.find_element(By.ID, "password").clear()
-    browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
+    # browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
+    browser.find_element(By.ID, "password").send_keys("chinamobile_2")
     browser.find_element(By.ID, longInButtonId).click()
     # for k in range(10):
     #     browser = click_upcoming_item(browser)
