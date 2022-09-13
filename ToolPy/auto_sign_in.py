@@ -68,8 +68,8 @@ def log_in_main_page():
         else:
             pass
     except:
-        chongbuluo_log.log('chrome 句柄初始化失败', level='error')
-        return
+        chongbuluo_log.log('浏览器句柄初始化失败', level='error')
+        # return
     # browser.set_window_size(200, 200)
     try:
         browser.get(TargetBaseUrl)

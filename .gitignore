@@ -137,3 +137,9 @@ dmypy.json
 # picture folder
 python/NewsPic
 .vscode
+
+# edge driver
+ToolPy/driver/msedgedriver.exe
+
+# xlsx file
+data/gatte.xlsx

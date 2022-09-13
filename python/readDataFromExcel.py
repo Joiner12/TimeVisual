@@ -20,7 +20,7 @@ class DataFromExcel():
             print("读取 "+self.exlsFile+" 数据**失败**...\n")
             return
         if updateData:
-            self._updateDailyData()
+            self._updateDailyData(exlsFile)
 
     def getData(self, meansSelector=0):
         if meansSelector == 0:

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+            <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+
+    <style type="text/css">
+            html,body{
+                height:98%;
+                width:98%
+            }
+        </style>
+</head>
+<body onresize="resizeFresh()">
+    <div id="c2d745519944467e8165b5ccb2ecf2f3" class="chart-container" style="width:95%; height:95%; margin:auto; top:10px"></div>
+    <script>
+        var chart_c2d745519944467e8165b5ccb2ecf2f3 = echarts.init(
+            document.getElementById('c2d745519944467e8165b5ccb2ecf2f3'), 'white', {renderer: 'canvas'});
+        var option_c2d745519944467e8165b5ccb2ecf2f3 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "color": [
+        "rgb(199, 0, 0)",
+        "rgb(79, 29, 0)"
+    ],
+    "series": [
+        {
+            "type": "bar",
+            "name": "A",
+            "coordinateSystem": "polar",
+            "symbolSize": 4,
+            "data": [
+                1,
+                2
+            ],
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "A"
+            ],
+            "selected": {
+                "A": true
+            },
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5
+    },
+    "radiusAxis": {
+        "type": "category",
+        "data": [
+            1
+        ],
+        "scale": false
+    },
+    "angleAxis": {
+        "clockwise": true,
+        "max": 10,
+        "scale": false,
+        "splitNumber": 5
+    },
+    "polar": {},
+    "title": [
+        {
+            "text": "Polar-RadiusAxis",
+            "padding": 5,
+            "itemGap": 10
+        }
+    ]
+};
+        chart_c2d745519944467e8165b5ccb2ecf2f3.setOption(option_c2d745519944467e8165b5ccb2ecf2f3);
+    </script>
+	<script>   
+		//窗口大小变化时候，进行刷新页面操作，防止样式混乱
+        var x=window.innerWidth;
+		function resizeFresh(){
+         if(x!=window.innerWidth)
+             location.reload();
+     }
+	</script>
+</body>
+</html>

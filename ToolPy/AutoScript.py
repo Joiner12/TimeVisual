@@ -18,6 +18,8 @@ import time
 import requests
 from logger import Logger
 import os
+import re
+from selenium.webdriver.common.action_chains import ActionChains
 # 日志文件
 lg = Logger(logging_service='oa')
 
@@ -31,10 +33,11 @@ def testWebdriver():
         WebDriverWait(browser, timeout).until(
             expected_conditions.presence_of_all_elements_located(locator))
 
+    lg.log("自动公文系统启动", "info")
     # 检查网络连接状态
     TargetBaseUrl = r'http://172.18.0.28:8080/cas/login?service=http://172.18.0.29/cas#/portal/index'
     if not requests.get(TargetBaseUrl).status_code == 200:
-        lg.error("网络连接失败")
+        lg.log("网络连接失败", "error")
         return
     # browserOptions = Options()
     # browserOptions.add_argument('headless')
@@ -46,8 +49,6 @@ def testWebdriver():
         "browserName": "MicrosoftEdge",
         "version": "",
         "platform": "WINDOWS",
-
-        # 关键是下面这个
         "ms:edgeOptions": {
             'extensions': [],
             'args': [
@@ -60,7 +61,6 @@ def testWebdriver():
     browser = webdriver.Edge(
         executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
         capabilities=EDGE)
-    # browser.set_window_size(200, 200)
     browser.get(TargetBaseUrl)
     # login status
     longInButtonId = "normalLoginButton"
@@ -70,64 +70,147 @@ def testWebdriver():
     browser.find_element(By.ID, "username").send_keys(os.getenv('OA_USERNAME'))
     browser.find_element(By.ID, "password").clear()
     # browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
-    browser.find_element(By.ID, "password").send_keys("chinamobile_2")
+    browser.find_element(By.ID, "password").send_keys('chinamobile_3')
     browser.find_element(By.ID, longInButtonId).click()
-    # for k in range(10):
-    #     browser = click_upcoming_item(browser)
-    while True:
-        try:
-            browser = click_upcoming_item(browser)
-        except:
-            break
-    lg.info("empty to do list", "info")
+    # dialog-content dialogin
+    if False:
+        # 方法一:设置弹窗为不可见
+        close_dialog_js = 'document.getElementsByClassName("dialog-content dialogin").style.display="none";'
+        browser.execute_script(close_dialog_js)
+    else:
+        # 方法二:空白处点击
+        ActionChains(browser).move_by_offset(1, 1).click().perform()
+
+    # loop_cnt = 0
+    # while True:
+    #     ret = click_upcoming_item_v2(browser)
+    #     browser = ret[0]
+    #     loop_cnt += 1
+    #     if not ret[1] or loop_cnt > 10:
+    #         break
+    try:
+        loop_cnt = 0
+        while True:
+            ret = click_upcoming_item_v2(browser)
+            browser = ret[0]
+            loop_cnt += 1
+            if not ret[1] or loop_cnt > 10:
+                break
+    except:
+        pass
+    lg.info("监测完成", "info")
     browser.quit()
 
 
-def click_upcoming_item(browser, *args, **kwargs):
-    """处理待办子功能模块
-
-    参数
-    ----------
-    browser : webdriver
-        浏览器驱动
-
-    返回值
-    -------
-    browser : webdriver
-        浏览器驱动
-
+def click_upcoming_item_v2(browser, *args, **kwargs):
+    """
+    embeded function
     """
 
     def wait(locator, timeout=2):
         WebDriverWait(browser, timeout).until(
             expected_conditions.presence_of_all_elements_located(locator))
 
-    # scroll for load element js
-    browser.execute_script("window.scrollBy(0,3000)")
-    wait((
-        By.XPATH,
-        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[2]/ul/li[1]/div[1]/span[2]'
-    ))
-    elementUpcoming = browser.find_element_by_xpath(
-        r'//*[@id="app"]/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[2]/ul/li[1]/div[1]/span[2]'
-    )
-    print(elementUpcoming.text)
-    lg.info("\r\n" + elementUpcoming.text)
-    browser.execute_script("arguments[0].click();", elementUpcoming)
+    # wait((
+    #     By.XPATH,
+    #     r'//*[@id="app"]/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div/ul/li[2]/div[1]'
+    # ))
     time.sleep(3 + random.rand())
-    all_h = browser.window_handles
-    browser.switch_to.window(all_h[1])
-    browser.execute_script("window.scrollBy(0,3000)")
-    time.sleep(3 + random.rand())
-    wait((By.CSS_SELECTOR, '.submit_btn.form_btn1'))
-    browser.execute_script(
-        "arguments[0].click();",
-        browser.find_element_by_css_selector('.submit_btn.form_btn1'))
+    # 方法二:空白处点击
+
+    ActionChains(browser).move_by_offset(1, 1).click().perform()
     time.sleep(1 + random.rand())
-    # traceback
-    browser.switch_to.window(all_h[0])
-    browser.execute_script("window.scrollBy(0,1)")
-    return browser
+    try_new_flag = False
+    try:
+        more_todo_elemet = browser.find_element(
+            By.XPATH,
+            r'/html/body/div/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/a[2]'
+            #r'/html/body/div/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[1]/a[2]'
+        )
+        more_todo_elemet.click()
+    except:
+        try_new_flag = True
+        lg.log("点击/*更多*/按钮错误", "error")
+    
+    if try_new_flag:
+        try:
+            more_todo_elemet = browser.find_element(
+                By.XPATH,
+                # r'/html/body/div/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/a[2]'
+                r'/html/body/div/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[1]/a[2]'
+            )
+            more_todo_elemet.click()
+        except:
+            lg.log("点击/*更多*/按钮错误", "error")
+    # 切换到代办窗口
+    all_h = browser.window_handles
+    main_window = all_h[0]
+    browser.switch_to.window(all_h[1])
+    time.sleep(3 + random.rand())
+
+    # 处理动态Item序号问题
+    li_num = 1
+    try:
+        for k in range(1, 5, 1):
+            x_path = '//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[1]/ul/li[%d]' % (
+                k)
+            li_item_name = browser.find_element(By.XPATH, x_path).text
+            ret_re = re.findall("(.*)(\d)", li_item_name)
+            if ret_re[0][0] == "公文系统 ":
+                li_num = k
+                break
+    except:
+        return browser, 0
+    x_path = '//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[1]/ul/li[%d]' % (
+        li_num)
+    doc_sys = browser.find_element(By.XPATH, x_path).text
+    ret_re = re.findall("(.*)(\d)", doc_sys)
+    doc_num = int(ret_re[0][-1])
+    if not doc_num == 0 and ret_re[0][0] == "公文系统 ":
+        # 切换到公文系统
+        browser.find_element(By.XPATH, x_path).click()
+        time.sleep(1 + random.rand())
+        # 点击处理
+        _处理按键 = browser.find_element(
+            By.XPATH,
+            r'//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[3]/table/tbody/tr[1]/td[6]/div/button'
+        )
+        browser.execute_script("arguments[0].click();", _处理按键)
+        _公文名 = browser.find_element(
+            By.XPATH,
+            r'//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[3]/table/tbody/tr[1]/td[1]/div/a'
+        ).text
+
+        time.sleep(2 + random.rand())
+        # 窗口切换
+        all_h = browser.window_handles
+        browser.switch_to.window(all_h[2])
+        time.sleep(2 + random.rand())
+        browser.execute_script("window.scrollBy(0,3000)")
+        # wait((By.CSS_SELECTOR, '.submit_btn.form_btn1'))
+        # //*[@id="section-4"]/div/div[1]/div[3]/span[2]/table/tbody/tr/td[1]/textarea
+        _处理意见 = browser.find_element(
+            By.XPATH,
+            r'//*[@id="section-4"]/div/div[1]/div[3]/span[2]/table/tbody/tr/td[1]/textarea'
+        )
+        if len(_处理意见.text) == 0:
+            _已阅 = browser.find_element(By.XPATH, r'//*[@id="i"]')
+            browser.execute_script("arguments[0].click();", _已阅)
+        browser.execute_script(
+            "arguments[0].click();",
+            browser.find_element_by_css_selector('.submit_btn.form_btn1'))
+        lg.log("\r\n" + _公文名, "info")
+        doc_num -= 1
+    else:
+        doc_num = 0
+    # 关闭多余窗口
+    all_h = browser.window_handles
+    for window_cur in all_h:
+        if window_cur != main_window:
+            browser.switch_to.window(window_cur)
+            browser.close()
+    browser.switch_to.window(main_window)
+    return browser, doc_num
 
 
 if __name__ == "__main__":
