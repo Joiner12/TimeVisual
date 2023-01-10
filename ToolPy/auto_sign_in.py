@@ -160,18 +160,31 @@ def log_in_main_page():
 
 
 def piece_lrc(lrc_file=r'./lrc/eason.txt'):
-    ret_lrc = ""
-    try:
-        with open(lrc_file, encoding='utf-8', mode='r') as f:
-            all_lines = f.readlines()
-            line_cnt = len(all_lines)
-            ret_lrc = all_lines[randint(0, line_cnt - 1)]
-            ret_lrc = re.sub(r'\[\d{1,}\]:', '', ret_lrc)
-    except:
-        ret_lrc = '感谢你特别邀请 来见证你的爱情'
+
+    emoji = [
+        "😀", "😃", "😄", "😁", "😆", "😊", "🫠", "🥰", "🤩", "😛", "🤪", "😝", "🤠", "👋",
+        "✋", "👌", "✌", "👏", "🙌", "🫶", "✍", "🐵", "🐒", "🐵", "🐒", "🦍", "🦧", "🐶",
+        "🐕", "🦮", "🐕‍🦺", "🐩", "🐺", "🦊", "🦝", "🐱", "🐈", "🐈‍⬛", "🦁", "🐯", "🐅",
+        "🐆", "🐴", "🐎", "🦄", "🦓", "🦌", "🦬", "🐮", "🐂", "🐃", "🐄", "🐷", "🐖", "🐗",
+        "🐽", "🐏", "🐑", "🐐", "🐪", "🐫", "🦙", "🦒", "🐘", "🦣", "🦏", "🦛", "🐭", "🐁",
+        "🐀", "🐹", "🐰", "🐇", "🐿", "🦫", "🦔", "🦇", "🐻", "🐻‍❄️", "🐨", "🐼", "🦥",
+        "🦦", "🦨", "🦘", "🦡", "🐾"
+    ]
+    cnt = len(emoji)
+    ret_lrc = "签到" + emoji[randint(0, cnt - 1)]
+    # ret_lrc = ""
+    # try:
+    #     with open(lrc_file, encoding='utf-8', mode='r') as f:
+    #         all_lines = f.readlines()
+    #         line_cnt = len(all_lines)
+    #         ret_lrc = all_lines[randint(0, line_cnt - 1)]
+    #         ret_lrc = re.sub(r'\[\d{1,}\]:', '', ret_lrc)
+    # except:
+    #     ret_lrc = '感谢你特别邀请 来见证你的爱情'
     return ret_lrc
 
 
 if __name__ == "__main__":
-    log_in_main_page()
-    # print(piece_lrc(lrc_file=r'./lrc/selfpart.txt'))
+    # log_in_main_page()
+    for k in range(100):
+        piece_lrc(lrc_file=r'./lrc/selfpart.txt')

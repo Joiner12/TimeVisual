@@ -108,3 +108,9 @@ for i, p in enumerate(wedges):
 ax.set_title("Matplotlib bakery: A donut")
 
 plt.show()
+
+#%% 
+import re
+a = " 全部待办 14"
+b = re.split(r' ', a)
+print("全部" in a)

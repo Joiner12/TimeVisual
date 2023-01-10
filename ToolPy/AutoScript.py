@@ -70,7 +70,7 @@ def testWebdriver():
     browser.find_element(By.ID, "username").send_keys(os.getenv('OA_USERNAME'))
     browser.find_element(By.ID, "password").clear()
     # browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
-    browser.find_element(By.ID, "password").send_keys('chinamobile_3')
+    browser.find_element(By.ID, "password").send_keys('chinamobile_4')
     browser.find_element(By.ID, longInButtonId).click()
     # dialog-content dialogin
     if False:
@@ -131,7 +131,7 @@ def click_upcoming_item_v2(browser, *args, **kwargs):
     except:
         try_new_flag = True
         lg.log("点击/*更多*/按钮错误", "error")
-    
+
     if try_new_flag:
         try:
             more_todo_elemet = browser.find_element(
@@ -149,24 +149,28 @@ def click_upcoming_item_v2(browser, *args, **kwargs):
     time.sleep(3 + random.rand())
 
     # 处理动态Item序号问题
-    li_num = 1
+    li_num = -1
     try:
         for k in range(1, 5, 1):
             x_path = '//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[1]/ul/li[%d]' % (
                 k)
             li_item_name = browser.find_element(By.XPATH, x_path).text
-            ret_re = re.findall("(.*)(\d)", li_item_name)
-            if ret_re[0][0] == "公文系统 ":
+            ret_re = re.split(" ", li_item_name)
+            if ret_re[0] == "公文系统":
                 li_num = k
                 break
     except:
         return browser, 0
+    # 判断li_num是否有效
+    if -1 == li_num:
+        lg.log("公文系统index查找失败", "error")
+        return
     x_path = '//*[@id="app"]/div/div/div[2]/div[2]/div/div/div/div/div[1]/ul/li[%d]' % (
         li_num)
     doc_sys = browser.find_element(By.XPATH, x_path).text
-    ret_re = re.findall("(.*)(\d)", doc_sys)
-    doc_num = int(ret_re[0][-1])
-    if not doc_num == 0 and ret_re[0][0] == "公文系统 ":
+    ret_re = re.split(" ", doc_sys)
+    doc_num = int(ret_re[-1])
+    if not doc_num == 0 and "公文系统" in ret_re[0]:
         # 切换到公文系统
         browser.find_element(By.XPATH, x_path).click()
         time.sleep(1 + random.rand())
