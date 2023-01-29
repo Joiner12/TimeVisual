@@ -11,17 +11,16 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from datetime import datetime
 from random import randint, random
 import re
 import time
 import sys
-from ChinaMobileNet import CMCC_LOGIN
 from logger import Logger
-import os
-# workspace
-cmd = '''cd D:\Code\TimeVisual\ToolPy '''
-os.system(cmd)
+import requests
+
+chongbuluo_log = Logger()
 
 
 def log_in_main_page():
@@ -33,15 +32,8 @@ def log_in_main_page():
         WebDriverWait(browser, timeout).until(
             expected_conditions.presence_of_all_elements_located(locator))
 
-    chongbuluo_log = Logger()
     TargetBaseUrl = r'https://www.chongbuluo.com/'
     chongbuluo_log.log('开始自动签到，完成配置', level='info')
-    cmcc_net = CMCC_LOGIN()
-    if not cmcc_net['status']:
-        chongbuluo_log.log(cmcc_net['detail'], level='error')
-        return
-    else:
-        chongbuluo_log.log(cmcc_net['detail'], level='info')
     try:
         # win平台使用edge,Linux平台使用chrome
         # edge
@@ -60,36 +52,45 @@ def log_in_main_page():
                 r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
                 capabilities=EDGE)
         elif sys.platform == 'linux':
-            browserOptions = Options()
-            browserOptions.add_argument('bina')
-            browserOptions.add_argument('headless')
-            browser = webdriver.Chrome(executable_path=r"chromdriver.exe",
-                                       options=browserOptions)
+            s = Service(executable_path=
+                        r'/home/smileface/Desktop/chongbuluo/chromedriver')
+            browser = webdriver.Chrome(service=s)
+            chongbuluo_log.log('browser驱动配置完成', level='info')
         else:
             pass
     except:
-        chongbuluo_log.log('浏览器句柄初始化失败', level='error')
-        # return
-    # browser.set_window_size(200, 200)
+        chongbuluo_log.log('browser驱动初始化失败', level='error')
+        return
+    # 检查登陆状态
+    logpage = requests.get(r'https://www.chongbuluo.com/')
+    # 已登陆
+    if logpage.status_code == 200:
+        chongbuluo_log.log('网络连接状态：正常', level='info')
+    else:
+        chongbuluo_log.log('网络连接状态：异常', level='error')
+        return
+    # ---
     try:
+        # browser.set_window_size(200, 200)
+        chongbuluo_log.log('输入账号密码', level='info')
         browser.get(TargetBaseUrl)
         # log in
         browser.find_element(By.CSS_SELECTOR,
-                             '#welcome > a:nth-child(1)').click()
-        # 等待加载
+                             r'#welcome > a:nth-child(1)').click()
+        # 等待加载f
         wait((By.XPATH, r'//*[@id="main_message"]/div/div[1]/h3'))
         browser.find_element(By.NAME, "username").clear()
-        browser.find_element(By.NAME,
-                             "username").send_keys(os.getenv('CBL_USERNAME'))
+        browser.find_element(By.NAME, "username").send_keys('Risky_JR')
         browser.find_element(By.NAME, "password").clear()
-        browser.find_element(By.NAME,
-                             "password").send_keys(os.getenv('CBL_PASSWORD'))
+        browser.find_element(By.NAME, "password").send_keys('Risky11#')
         browser.find_element(By.NAME, 'loginsubmit').click()
     except:
         chongbuluo_log.log('输入账号密码失败', level='error')
         return
-    # 签到页面
+
     try:
+        # 签到页面
+        chongbuluo_log.log('查找签到按钮', level='info')
         wait((By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a'),
              timeout=10)
         browser.find_element(
@@ -99,6 +100,7 @@ def log_in_main_page():
     except:
         chongbuluo_log.log('签到元素加载失败', level='error')
         return
+
     try:
         # 签到
         # /html/body/div[5]/div[2]/div[1]/div[1]/a
@@ -117,7 +119,6 @@ def log_in_main_page():
                 filling_words = datetime.now().strftime('%Y-%m-%d')
             else:
                 filling_words = piece_lrc()
-            chongbuluo_log.log(filling_words, level='info')
             browser.find_element(
                 By.XPATH,
                 r'/html/body/div[1]/div/table/tbody/tr[2]/td[2]/form/div/p/textarea'
@@ -150,6 +151,7 @@ def log_in_main_page():
             r'/html/body/div[5]/div[2]/div[1]/div[2]/ul/li[2]/span').text
         got_bits = re.sub(r'Bit', '', got_bits)
         text_temp = "\t连续签到:%5s天 \t 累计获得:%4s Bit" % (continue_days, got_bits)
+        # print('—' * 59 + '\n', text_temp.center(40, chr(12288)), '—' * 59)
         chongbuluo_log.log('自动签到成功' + '\n' + text_temp.center(40, chr(12288)) +
                            '—' * 5 + '\n',
                            level='info')
@@ -160,15 +162,13 @@ def log_in_main_page():
 
 
 def piece_lrc(lrc_file=r'./lrc/eason.txt'):
-    # emoji = [
-    #     "😀", "😃", "😄", "😁", "😆", "😊", "🫠", "🥰", "🤩", "😛", "🤪", "😝", "🤠", "👋",
-    #     "✋", "👌", "✌", "👏", "🙌", "🫶", "✍", "🐵", "🐒", "🐵", "🐒", "🦍", "🦧", "🐶",
-    #     "🐕", "🦮", "🐕‍🦺", "🐩", "🐺", "🦊", "🦝", "🐱", "🐈", "🐈‍⬛", "🦁", "🐯", "🐅",
-    #     "🐆", "🐴", "🐎", "🦄", "🦓", "🦌", "🦬", "🐮", "🐂", "🐃", "🐄", "🐷", "🐖", "🐗",
-    #     "🐽", "🐏", "🐑", "🐐", "🐪", "🐫", "🦙", "🦒", "🐘", "🦣", "🦏", "🦛", "🐭", "🐁",
-    #     "🐀", "🐹", "🐰", "🐇", "🐿", "🦫", "🦔", "🦇", "🐻", "🐻‍❄️", "🐨", "🐼", "🦥",
-    #     "🦦", "🦨", "🦘", "🦡", "🐾"
-    # ]
+    """
+        emoji = ["🐷", "🐖", "🐗",
+             "🐽", "🐏", "🐑", "🐐", "🐪", "🐫", "🦙", "🦒", "🐘", "🦣", "🦏", "🦛", "🐭", "🐁",
+             "🐀", "🐹", "🐰", "🐇", "🐿", "🦫", "🦔", "🦇", "🐻", "🐻‍❄️", "🐨", "🐼", "🦥",
+             "🦦", "🦨", "🦘", "🦡", "🐾"
+             ]
+    """
     charc_emoji = [
         "o(〃'▽'〃)o", "（￣︶￣）↗", "<（￣︶￣）>", "ʕ•̫͡• ʔ", "ˁ῁̭ˀ", "ˁ῁̬ˀ", "ˁ῁̼ˀ",
         "ˁ῁̩ˀ", "ˁ῁̥ˀ", "ˁ῁̱ˀ", "ˁ῁̮ˀ", "♡", " .^◡^.", "ᵔ.ᵔ", "ᵔ◡ᵔ", "ʕง•ᴥ•ʔง",
@@ -190,6 +190,6 @@ def piece_lrc(lrc_file=r'./lrc/eason.txt'):
 
 
 if __name__ == "__main__":
-    # log_in_main_page()
-    for k in range(100):
-        print(piece_lrc(lrc_file=r'./lrc/selfpart.txt'))
+    log_in_main_page()
+    # for k in range(10):
+    #     print(piece_lrc(lrc_file=r'./lrc/selfpart.txt'))
