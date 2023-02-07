@@ -63,15 +63,23 @@ def testWebdriver():
         capabilities=EDGE)
     browser.get(TargetBaseUrl)
     # login status
-    longInButtonId = "normalLoginButton"
-    wait((By.ID, longInButtonId))
-    browser.find_element(By.ID, longInButtonId)
-    browser.find_element(By.ID, "username").clear()
-    browser.find_element(By.ID, "username").send_keys(os.getenv('OA_USERNAME'))
-    browser.find_element(By.ID, "password").clear()
-    # browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
-    browser.find_element(By.ID, "password").send_keys('chinamobile_4')
-    browser.find_element(By.ID, longInButtonId).click()
+    try:
+        longInButtonId = "normalLoginButton"
+        wait((By.ID, longInButtonId))
+        browser.find_element(By.ID, longInButtonId)
+    except:
+        lg.log("登录按键查找失败", "error")
+    # send userkey
+    try:
+        browser.find_element(By.ID, "username").clear()
+        browser.find_element(By.ID,
+                             "username").send_keys(os.getenv('OA_USERNAME'))
+        browser.find_element(By.ID, "password").clear()
+        # browser.find_element(By.ID, "password").send_keys(os.getenv('OA_PASSWORD'))
+        browser.find_element(By.ID, "password").send_keys('chinamobile_5')
+        browser.find_element(By.ID, longInButtonId).click()
+    except:
+        lg.log("账号密码错误", "error")
     # dialog-content dialogin
     if False:
         # 方法一:设置弹窗为不可见
