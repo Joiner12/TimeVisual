@@ -58,10 +58,18 @@ def testWebdriver():
             ]
         }
     }
-    browser = webdriver.Edge(
-        executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
-        capabilities=EDGE)
-    browser.get(TargetBaseUrl)
+    try:
+        browser = webdriver.Edge(
+            executable_path=
+            r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+            capabilities=EDGE)
+    except:
+        lg.log("edge驱动配置失败", "error")
+    try:
+        browser.get(TargetBaseUrl)
+    except:
+        lg.log("目标主页连接失败", "error")
+
     # login status
     try:
         longInButtonId = "normalLoginButton"
