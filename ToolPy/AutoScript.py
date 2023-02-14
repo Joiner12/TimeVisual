@@ -52,7 +52,7 @@ def testWebdriver():
         "ms:edgeOptions": {
             'extensions': [],
             'args': [
-                '--headless'
+                # '--headless'
                 # '--disable-gpu',
                 # '--remote-debugging-port=9222',
             ]
@@ -136,28 +136,14 @@ def click_upcoming_item_v2(browser, *args, **kwargs):
 
     ActionChains(browser).move_by_offset(1, 1).click().perform()
     time.sleep(1 + random.rand())
-    try_new_flag = False
     try:
         more_todo_elemet = browser.find_element(
             By.XPATH,
-            r'/html/body/div/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/a[2]'
-            #r'/html/body/div/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[1]/a[2]'
+            r'/html/body/div/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[1]/a[2]'
         )
         more_todo_elemet.click()
     except:
-        try_new_flag = True
         lg.log("点击/*更多*/按钮错误", "error")
-
-    if try_new_flag:
-        try:
-            more_todo_elemet = browser.find_element(
-                By.XPATH,
-                # r'/html/body/div/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/a[2]'
-                r'/html/body/div/div/div/div[2]/div[3]/div/div[1]/div/div/div/div[1]/a[2]'
-            )
-            more_todo_elemet.click()
-        except:
-            lg.log("点击/*更多*/按钮错误", "error")
     # 切换到代办窗口
     all_h = browser.window_handles
     main_window = all_h[0]
