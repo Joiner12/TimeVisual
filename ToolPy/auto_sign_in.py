@@ -90,12 +90,13 @@ def log_in_main_page():
         return
     # 签到页面
     try:
-        wait((By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a'),
-             timeout=10)
-        browser.find_element(
-            By.XPATH, r'/html/body/div[6]/div[1]/div/div/ul/li[15]/a').click()
         #
-        wait((By.XPATH, r'/html/body/div[5]/div[1]/div/a[2]'), timeout=10)
+        wait((By.XPATH, r'//*[@id="thread_types"]/li[14]/a'), timeout=10)
+        browser.find_element(By.XPATH,
+                             r'//*[@id="thread_types"]/li[14]/a').click()
+        #
+        wait((By.XPATH, r'//*[@id="wp"]/div[2]/div[1]/div[2]/ul/li[1]'),
+             timeout=10)
     except:
         chongbuluo_log.log('签到元素加载失败', level='error')
         return
