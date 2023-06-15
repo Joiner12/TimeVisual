@@ -26,10 +26,6 @@ def tcplink(sock, addr):
     print('Connection from %s:%s closed.' % addr)
 
 
-# 获取以太网IPV4地址
-import socket
-
-
 # 获取以太网IPv4地址
 def get_ethernet_ipv4():
     try:
