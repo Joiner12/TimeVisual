@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 import os, re, requests, shutil, zipfile, io
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -11,7 +11,7 @@ global_config = {
 }
 
 
-class DownloadEdgeDriver():
+class DownloadEdgeDriver:
     version_info = str()
 
     def __init__(self) -> None:
@@ -23,13 +23,17 @@ class DownloadEdgeDriver():
         else:
             pass
             # print("new 得很")
+
     def GetVersionInfo(self):
         return self.version_info
 
     def _UpdateDriver(self):
         # 版本链接
-        url = r"https://msedgedriver.azureedge.net/" + \
-            self.version_info + r"/edgedriver_win64.zip"
+        url = (
+            r"https://msedgedriver.azureedge.net/"
+            + self.version_info
+            + r"/edgedriver_win64.zip"
+        )
 
         # 发送 HTTP GET 请求获取文件内容
         response = requests.get(url)
@@ -61,22 +65,23 @@ class DownloadEdgeDriver():
                 "version": "",
                 "platform": "WINDOWS",
                 "ms:edgeOptions": {
-                    'extensions': [],
-                    'args': [
-                        '--headless'
+                    "extensions": [],
+                    "args": [
+                        "--headless"
                         # '--disable-gpu',
                         # '--remote-debugging-port=9222',
-                    ]
-                }
+                    ],
+                },
             }
             browser = webdriver.Edge(
-                executable_path=
-                r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
-                capabilities=EDGE)
+                executable_path=r"D:\Code\TimeVisual\ToolPy\driver\msedgedriver.exe",
+                capabilities=EDGE,
+            )
             browser.close()
         except SessionNotCreatedException as msg:
-            reg = re.search("(.*)Current browser version is (.*) with",
-                            str(msg))  # 识别并匹配Exception信息中出现的版本号
+            reg = re.search(
+                "(.*)Current browser version is (.*) with", str(msg)
+            )  # 识别并匹配Exception信息中出现的版本号
             edge_version = reg.group(2)  # 获得版本号
             # print(edge_version)
         self.version_info = edge_version
@@ -84,23 +89,25 @@ class DownloadEdgeDriver():
 
     # 解析软件安装文件获取版本信息
     def _ParseVersionNum(self):
-        config_file = os.path.join(global_config["edge_path"],
-                                   "msedge.VisualElementsManifest.xml")
-        config_file_copy = os.path.join(global_config["dirver_path"],
-                                        "msedge.VisualElementsManifest.xml")
+        config_file = os.path.join(
+            global_config["edge_path"], "msedge.VisualElementsManifest.xml"
+        )
+        config_file_copy = os.path.join(
+            global_config["dirver_path"], "msedge.VisualElementsManifest.xml"
+        )
         # 拷贝文件
         shutil.copy(config_file, config_file_copy)
         file_content = str()
         version = str()
         # 读取文件内容
         try:
-            with open(self.config_file_copy, 'r') as f:
+            with open(self.config_file_copy, "r") as f:
                 file_content = f.read()
         except:
             print("copy file failed\n")
             return version
         # 使用正则表达式匹配版本号
-        match = re.search(r'(\d+\.\d+\.\d+\.\d+)', file_content)
+        match = re.search(r"(\d+\.\d+\.\d+\.\d+)", file_content)
 
         if match:
             version = match.group(1)
