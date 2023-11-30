@@ -1,17 +1,3 @@
-# import os
-# from PIL import Image
-# im = Image.open('D:\\Python\\gif\\first.gif')
-# os.mkdir('图形拆分')
-# try:
-#     i = 0
-#     while True:
-#         im.seek(i)
-#         im.save('图形拆分/'+str(i)+'.png')
-#         i = i +1
-# except:
-#     pass
-# print('共拆解图像帧数'+str(i))
-
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename, askdirectory
 import os
