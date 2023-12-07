@@ -1,9 +1,10 @@
 from tkinter import Tk
-from tkinter.filedialog import askopenfilename, askdirectory
+from tkinter.filedialog import askopenfilename
 import os
 from PIL import Image, ImageSequence
 import cv2
 import numpy as np
+from tqdm import tqdm
 
 
 def file_selector():
@@ -41,13 +42,14 @@ def split_gif(gif_file, *args_, **pargs):
     # 分解每个GIF文件为单张图片
     gif_image = Image.open(gif_file)
 
-    # 逐帧保存为单张图片
-    for i, frame in enumerate(ImageSequence.Iterator(gif_image)):
-        frame_path = f"{sep_folder_path}/frame_{i}.png"
-        frame.save(frame_path, "PNG")
-        # print(frame_path)
-    # 显示完成消息
-    print("已完成分解GIF为单张图片")
+    with tqdm() as p_bar:
+        # 逐帧保存为单张图片
+        for i, frame in enumerate(ImageSequence.Iterator(gif_image)):
+            frame_path = f"{sep_folder_path}/frame_{i}.png"
+            frame.save(frame_path, "PNG")
+            p_bar.update(1)
+            p_bar.set_description(f"逐帧分解图片,当前为:{frame_path}")
+        # 显示完成消息
     return sep_folder_path, i
 
 
@@ -91,15 +93,16 @@ def calc_ssim(file_dir, frame_num, *args_, **pargs):
     """
     遍历计算图像帧相似度
     """
-    print("图像帧相似度计算.....")
     ssim_matrix = np.zeros((frame_num, frame_num))
-    for j in range(frame_num):
-        base_pic = f"{file_dir}/frame_{j}.png"
-        for k in range(frame_num):
-            tar_pic = f"{file_dir}/frame_{k}.png"
-            ssim_ = classify_aHash(base_pic, tar_pic)
-            ssim_matrix[j, k] = ssim_
-
+    with tqdm(total=frame_num * frame_num) as p_bar:
+        for j in range(frame_num):
+            base_pic = f"{file_dir}/frame_{j}.png"
+            for k in range(frame_num):
+                tar_pic = f"{file_dir}/frame_{k}.png"
+                ssim_ = classify_aHash(base_pic, tar_pic)
+                ssim_matrix[j, k] = ssim_
+                p_bar.update(1)
+                p_bar.set_description(f"图像相似度计算:{j}.png {k}.png")
     return ssim_matrix
 
 
@@ -107,7 +110,6 @@ def depress(ssim_matrix, file_dir, frame_num):
     """
     通过比较相似度压缩图像帧
     """
-    print("压缩文件......")
     files_ = list()
     frame_index = [x for x in range(frame_num)]
     for k in range(frame_num - 1):
@@ -136,7 +138,6 @@ def depress(ssim_matrix, file_dir, frame_num):
             print(f"{file_dir}/frame_{j}.png deleted successfully.")
         except OSError as e:
             print(f"Error deleting file: {e}")
-    print("完成文件压缩")
     return files_
 
 
@@ -146,17 +147,19 @@ def main():
     file_dir, frame_num = split_gif(file_gif)
     ssim_matrix = calc_ssim(file_dir, frame_num)
     pic_files = depress(ssim_matrix, file_dir, frame_num)
-    test_rbg(pic_files)
+    remove_bg(pic_files)
 
 
-def test_rbg(file_, *args_, **pargs):
+def remove_bg(file_, *args_, **pargs):
     from rembg import remove
 
-    print("背景消除......")
-    for pic_file in file_:
-        file_in = Image.open(pic_file)
-        file_out = remove(file_in)
-        file_out.save(pic_file)
+    with tqdm(total=len(file_)) as p_bar:
+        for pic_file in file_:
+            file_in = Image.open(pic_file)
+            file_out = remove(file_in)
+            file_out.save(pic_file)
+            p_bar.update(1)
+            p_bar.set_description(f"图像背景处理:{pic_file}")
     print("完成!")
 
 
