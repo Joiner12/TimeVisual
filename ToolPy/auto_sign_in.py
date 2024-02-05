@@ -200,7 +200,7 @@ def piece_lrc(lrc_file=r"./lrc/eason.txt"):
         " (　ﾟ∀ﾟ) ﾉ♡",
     ]
     cnt = len(charc_emoji)
-    ret_lrc = "签到 " + charc_emoji[randint(0, cnt - 1)]
+    ret_lrc = "_签到 " + charc_emoji[randint(0, cnt - 1)]
     # ret_lrc = ""
     # try:
     #     with open(lrc_file, encoding='utf-8', mode='r') as f:
